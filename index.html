@@ -6,6 +6,7 @@
     <title>Controle de Gastos</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -54,6 +55,11 @@
                 <tbody>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Botão para download do Excel -->
+        <div class="download-section">
+            <button onclick="exportarParaExcel()">Baixar Relatório em Excel</button>
         </div>
     </div>
 

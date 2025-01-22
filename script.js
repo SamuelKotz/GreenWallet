@@ -34,7 +34,6 @@ function adicionarGasto() {
 
         atualizarExtrato();
         atualizarGrafico();
-        salvarCSV();
 
         document.getElementById('descricao').value = '';
         document.getElementById('valor').value = '';
@@ -91,18 +90,28 @@ function atualizarGrafico() {
     });
 }
 
-function salvarCSV() {
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Descrição,Valor,Categoria\n";
+function exportarParaExcel() {
+    // Cria um array com os dados dos gastos
+    const dados = gastos.map(gasto => ({
+        Descrição: gasto.descricao,
+        Valor: gasto.valor,
+        Categoria: gasto.categoria
+    }));
 
-    gastos.forEach(gasto => {
-        csvContent += `${gasto.descricao},${gasto.valor.toFixed(2)},${gasto.categoria}\n`;
+    // Adiciona o saldo atual como uma linha adicional
+    dados.push({
+        Descrição: "Saldo Atual",
+        Valor: saldo,
+        Categoria: ""
     });
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "gastos.csv");
-    document.body.appendChild(link);
-    link.click();
+    // Cria uma planilha com os dados
+    const worksheet = XLSX.utils.json_to_sheet(dados);
+
+    // Cria um workbook e adiciona a planilha
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Gastos");
+
+    // Gera o arquivo Excel
+    XLSX.writeFile(workbook, "gastos.xlsx");
 }
