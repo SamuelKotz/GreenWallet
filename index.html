@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Gastos</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Controle de Gastos</h1>
-        
+        <!-- Seção do Saldo -->
         <div class="saldo-section">
             <label for="saldo">Saldo Inicial:</label>
             <input type="number" id="saldo" placeholder="Digite seu saldo">
             <button onclick="registrarSaldo()">Registrar Saldo</button>
         </div>
 
+        <!-- Seção de Adicionar Gasto -->
         <div class="gasto-section">
             <label for="descricao">Descrição do Gasto:</label>
             <input type="text" id="descricao" placeholder="Descrição">
@@ -23,9 +24,23 @@
             <label for="valor">Valor do Gasto:</label>
             <input type="number" id="valor" placeholder="Valor">
             
+            <label for="categoria">Categoria:</label>
+            <select id="categoria">
+                <option value="Alimentação">Alimentação</option>
+                <option value="Lazer">Lazer</option>
+                <option value="Despesa Fixa">Despesa Fixa</option>
+                <option value="Pessoal">Pessoal</option>
+                <option value="Assinaturas">Assinaturas</option>
+                <option value="Casa">Casa</option>
+                <option value="Educação">Educação</option>
+                <option value="Saúde">Saúde</option>
+                <option value="Serviços">Serviços</option>
+            </select>
+            
             <button onclick="adicionarGasto()">Adicionar Gasto</button>
         </div>
 
+        <!-- Seção do Extrato -->
         <div class="extrato-section">
             <h2>Extrato de Gastos</h2>
             <table id="extrato">
@@ -33,12 +48,18 @@
                     <tr>
                         <th>Descrição</th>
                         <th>Valor</th>
+                        <th>Categoria</th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- Gráfico de Setor -->
+    <div class="grafico-section">
+        <canvas id="graficoPizza"></canvas>
     </div>
 
     <script src="script.js"></script>
