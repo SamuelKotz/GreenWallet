@@ -22,7 +22,7 @@ window.addEventListener('load', () => {
     if (loadingScreen) {
         setTimeout(() => {
             loadingScreen.classList.add('hidden'); // Esconde a tela de carregamento após 3 segundos
-        }, 3000);
+        }, 5000);
     }
     verificarParcelasDoMes(); // Verifica se há parcelas para o mês atual
 });
