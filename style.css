@@ -138,3 +138,42 @@ th {
 #loading-screen.hidden {
     display: none;
 }
+
+/* Estilos dos Botões de Adicionar Gastos */
+.botoes-gastos {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.botoes-gastos button {
+    flex: 1;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.botoes-gastos button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos dos Formulários de Gastos */
+.form-gasto {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.form-gasto h3 {
+    margin-top: 0;
+    color: #4CAF50;
+}
+
+.form-gasto.hidden {
+    display: none;
+}
