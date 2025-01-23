@@ -1,7 +1,7 @@
 
-# Controle de Gastos Pessoais
+# GreenWallet
 
-O Controle de Gastos Pessoais é uma aplicação web desenvolvida para ajudar usuários a gerenciar suas finanças de forma simples e eficiente. Com uma interface limpa e intuitiva, o aplicativo permite que o usuário registre seu saldo inicial, adicione gastos categorizados e visualize um gráfico de pizza que mostra a distribuição dos gastos por categoria. Além disso, todos os gastos podem ser exportados para um arquivo CSV, facilitando a análise e o planejamento financeiro.
+O GreenWallet é uma aplicação web desenvolvida para ajudar usuários a gerenciar suas finanças de forma simples e eficiente. Com uma interface limpa e intuitiva, o aplicativo permite que o usuário registre seu saldo inicial, adicione gastos categorizados e visualize um gráfico de pizza que mostra a distribuição dos gastos por categoria. Além disso, todos os gastos podem ser exportados para um arquivo CSV, facilitando a análise e o planejamento financeiro.
 
 Este projeto foi criado com o objetivo de proporcionar uma ferramenta prática para o controle financeiro pessoal, incentivando a organização e a conscientização sobre os gastos.
 
