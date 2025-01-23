@@ -15,6 +15,16 @@ let categorias = {
 const ctx = document.getElementById('graficoPizza').getContext('2d');
 let graficoPizza;
 
+// Tela de Carregamento
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+        setTimeout(() => {
+            loadingScreen.classList.add('hidden'); // Esconde a tela de carregamento após 3 segundos
+        }, 5000);
+    }
+});
+
 function registrarSaldo() {
     const saldoInput = document.getElementById('saldo');
     saldo = parseFloat(saldoInput.value);
