@@ -5,9 +5,9 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
 }
 
 .container {
@@ -15,7 +15,15 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 50%;
+}
+
+.grafico-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 40%;
 }
 
 h1 {
@@ -33,7 +41,7 @@ label {
     font-weight: bold;
 }
 
-input {
+input, select {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -73,4 +81,99 @@ th, td {
 th {
     background-color: #4CAF50;
     color: white;
+}
+
+.download-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.download-section button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.download-section button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos da Tela de Carregamento */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff; /* Fundo branco */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Garante que a tela de carregamento fique acima de tudo */
+}
+
+.loading-logo {
+    max-width: 200px; /* Ajuste o tamanho da logo conforme necessário */
+    animation: pulse 1.5s infinite; /* Animação de pulsação */
+}
+
+/* Animação de pulsação */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Esconde a tela de carregamento quando a página estiver carregada */
+#loading-screen.hidden {
+    display: none;
+}
+
+/* Estilos dos Botões de Adicionar Gastos */
+.botoes-gastos {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.botoes-gastos button {
+    flex: 1;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.botoes-gastos button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos dos Formulários de Gastos */
+.form-gasto {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.form-gasto h3 {
+    margin-top: 0;
+    color: #4CAF50;
+}
+
+.form-gasto.hidden {
+    display: none;
 }

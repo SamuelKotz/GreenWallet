@@ -3,29 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Gastos</title>
+    <title>GreenWallet</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 </head>
 <body>
+    <!-- Tela de Carregamento -->
+    <div id="loading-screen">
+        <img src="logo.svg" alt="GreenWallet Logo" class="loading-logo">
+    </div>
+
+    <!-- Conteúdo Principal -->
     <div class="container">
-        <h1>Controle de Gastos</h1>
-        
+        <!-- Seção do Saldo -->
         <div class="saldo-section">
             <label for="saldo">Saldo Inicial:</label>
             <input type="number" id="saldo" placeholder="Digite seu saldo">
             <button onclick="registrarSaldo()">Registrar Saldo</button>
         </div>
 
-        <div class="gasto-section">
-            <label for="descricao">Descrição do Gasto:</label>
-            <input type="text" id="descricao" placeholder="Descrição">
-            
-            <label for="valor">Valor do Gasto:</label>
-            <input type="number" id="valor" placeholder="Valor">
-            
-            <button onclick="adicionarGasto()">Adicionar Gasto</button>
+        <!-- Botões para Adicionar Gastos -->
+        <div class="botoes-gastos">
+            <button onclick="mostrarFormulario('avista')">Adicionar Gasto à Vista</button>
+            <button onclick="mostrarFormulario('parcelado')">Adicionar Gasto Parcelado</button>
         </div>
 
+        <!-- Formulário de Gasto à Vista -->
+        <div id="form-avista" class="form-gasto hidden">
+            <h3>Adicionar Gasto à Vista</h3>
+            <label for="descricao-avista">Descrição do Gasto:</label>
+            <input type="text" id="descricao-avista" placeholder="Descrição">
+            
+            <label for="valor-avista">Valor do Gasto:</label>
+            <input type="number" id="valor-avista" placeholder="Valor">
+            
+            <label for="categoria-avista">Categoria:</label>
+            <select id="categoria-avista">
+                <option value="Alimentação">Alimentação</option>
+                <option value="Lazer">Lazer</option>
+                <option value="Despesa Fixa">Despesa Fixa</option>
+                <option value="Pessoal">Pessoal</option>
+                <option value="Assinaturas">Assinaturas</option>
+                <option value="Casa">Casa</option>
+                <option value="Educação">Educação</option>
+                <option value="Saúde">Saúde</option>
+                <option value="Serviços">Serviços</option>
+            </select>
+            
+            <button onclick="adicionarGastoAvista()">Adicionar Gasto</button>
+            <button onclick="esconderFormularios()">Cancelar</button>
+        </div>
+
+        <!-- Formulário de Gasto Parcelado -->
+        <div id="form-parcelado" class="form-gasto hidden">
+            <h3>Adicionar Gasto Parcelado</h3>
+            <label for="descricao-parcelado">Descrição do Gasto:</label>
+            <input type="text" id="descricao-parcelado" placeholder="Descrição">
+            
+            <label for="valor-total">Valor Total:</label>
+            <input type="number" id="valor-total" placeholder="Valor Total">
+            
+            <label for="parcelas">Número de Parcelas:</label>
+            <input type="number" id="parcelas" placeholder="Número de Parcelas">
+            
+            <label for="data-primeira-parcela">Data da Primeira Parcela:</label>
+            <input type="date" id="data-primeira-parcela">
+            
+            <label for="categoria-parcelado">Categoria:</label>
+            <select id="categoria-parcelado">
+                <option value="Alimentação">Alimentação</option>
+                <option value="Lazer">Lazer</option>
+                <option value="Despesa Fixa">Despesa Fixa</option>
+                <option value="Pessoal">Pessoal</option>
+                <option value="Assinaturas">Assinaturas</option>
+                <option value="Casa">Casa</option>
+                <option value="Educação">Educação</option>
+                <option value="Saúde">Saúde</option>
+                <option value="Serviços">Serviços</option>
+            </select>
+            
+            <button onclick="adicionarGastoParcelado()">Adicionar Gasto</button>
+            <button onclick="esconderFormularios()">Cancelar</button>
+        </div>
+
+        <!-- Seção do Extrato -->
         <div class="extrato-section">
             <h2>Extrato de Gastos</h2>
             <table id="extrato">
@@ -33,12 +95,24 @@
                     <tr>
                         <th>Descrição</th>
                         <th>Valor</th>
+                        <th>Categoria</th>
+                        <th>Data</th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
         </div>
+
+        <!-- Botão para download do Excel -->
+        <div class="download-section">
+            <button onclick="exportarParaExcel()">Baixar Relatório em Excel</button>
+        </div>
+    </div>
+
+    <!-- Gráfico de Setor -->
+    <div class="grafico-section">
+        <canvas id="graficoPizza"></canvas>
     </div>
 
     <script src="script.js"></script>

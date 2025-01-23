@@ -1,6 +1,7 @@
 
 # GreenWallet
 
+
 O GreenWallet é uma aplicação web desenvolvida para ajudar usuários a gerenciar suas finanças de forma simples e eficiente. O aplicativo permite que o usuário registre seu saldo inicial, adicione gastos à vista ou parcelados, e visualize um gráfico de pizza que mostra a distribuição dos gastos por categoria. Além disso, todos os gastos podem ser exportados para um arquivo Excel, facilitando a análise e o planejamento financeiro.
 
 
@@ -48,6 +49,7 @@ Este projeto foi criado com o objetivo de proporcionar uma ferramenta prática p
 
 
 
+
 ## Tecnologias Utilizadas
 
 **HTML**: Estruturação da página web.
@@ -59,6 +61,7 @@ Este projeto foi criado com o objetivo de proporcionar uma ferramenta prática p
 **Chart.js**: Biblioteca para geração do gráfico de pizza.
 
 **SheetJS (xlsx)**: Biblioteca para exportação dos dados para Excel.
+
 
 
 ## Como Usar
@@ -77,6 +80,7 @@ Este projeto foi criado com o objetivo de proporcionar uma ferramenta prática p
 
 - Todos os gastos do mês atual serão exibidos na tabela de extrato, com o saldo atualizado.
 
+
 4. Acompanhe o Gráfico:
 
 - O gráfico de pizza será atualizado automaticamente, mostrando a distribuição dos gastos por categoria.
@@ -84,6 +88,7 @@ Este projeto foi criado com o objetivo de proporcionar uma ferramenta prática p
 5. Exporte os Dados:
 
 - Clique em "Baixar Relatório em Excel" para exportar os dados.
+
 
 
 
@@ -104,3 +109,4 @@ git clone https://github.com/SamuelKotz/GreenWallet.git
 
 - Foco no Controle Mensal:
   O aplicativo foi ajustado para ser um controle de gastos mensal, exibindo apenas os gastos do mês atual.
+
