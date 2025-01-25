@@ -27,6 +27,41 @@ window.addEventListener('load', () => {
     verificarParcelasDoMes(); // Verifica se há parcelas para o mês atual
 });
 
+// Função para exibir a janela de confirmação
+function exibirJanelaConfirmacao(mensagem) {
+    const overlay = document.getElementById('confirmation-overlay');
+    const mensagemElemento = document.getElementById('confirmation-message');
+
+    mensagemElemento.textContent = mensagem; // Define a mensagem
+    overlay.classList.remove('hidden'); // Exibe a janela
+
+    // Fecha a janela automaticamente após 10 segundos
+    setTimeout(() => {
+        fecharJanelaConfirmacao();
+    }, 10000);
+}
+
+// Função para fechar a janela de confirmação
+function fecharJanelaConfirmacao() {
+    const overlay = document.getElementById('confirmation-overlay');
+    overlay.classList.add('hidden'); // Esconde a janela
+}
+
+// Função para registrar o saldo inicial
+function registrarSaldo() {
+    const saldoInput = document.getElementById('saldo');
+    const saldoRegistrado = parseFloat(saldoInput.value);
+
+    if (saldoRegistrado) {
+        saldo = saldoRegistrado; // Atualiza o saldo global
+        saldoInput.value = ''; // Limpa o campo de entrada
+        exibirJanelaConfirmacao(`Saldo R$ ${saldo.toFixed(2)} registrado com sucesso!`);
+        atualizarExtrato(); // Atualiza o extrato imediatamente
+    } else {
+        alert('Por favor, insira um valor válido para o saldo.');
+    }
+}
+
 // Função para mostrar o formulário correspondente
 function mostrarFormulario(tipo) {
     esconderFormularios(); // Esconde todos os formulários primeiro
@@ -221,12 +256,4 @@ function exportarParaExcel() {
 
     // Gera o arquivo Excel
     XLSX.writeFile(workbook, "gastos.xlsx");
-}
-
-// Função para registrar o saldo inicial
-function registrarSaldo() {
-    const saldoInput = document.getElementById('saldo');
-    saldo = parseFloat(saldoInput.value);
-    saldoInput.value = '';
-    alert(`Saldo inicial registrado: R$ ${saldo.toFixed(2)}`);
 }
