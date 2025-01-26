@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 </head>
+
 <body>
     <!-- Tela de Carregamento -->
     <div id="loading-screen">
@@ -34,10 +36,10 @@
             <h3>Adicionar Gasto à Vista</h3>
             <label for="descricao-avista">Descrição do Gasto:</label>
             <input type="text" id="descricao-avista" placeholder="Descrição">
-            
+
             <label for="valor-avista">Valor do Gasto:</label>
             <input type="number" id="valor-avista" placeholder="Valor">
-            
+
             <label for="categoria-avista">Categoria:</label>
             <select id="categoria-avista">
                 <option value="Alimentação">Alimentação</option>
@@ -50,7 +52,7 @@
                 <option value="Saúde">Saúde</option>
                 <option value="Serviços">Serviços</option>
             </select>
-            
+
             <button onclick="adicionarGastoAvista()">Adicionar Gasto</button>
             <button onclick="esconderFormularios()">Cancelar</button>
         </div>
@@ -60,16 +62,16 @@
             <h3>Adicionar Gasto Parcelado</h3>
             <label for="descricao-parcelado">Descrição do Gasto:</label>
             <input type="text" id="descricao-parcelado" placeholder="Descrição">
-            
+
             <label for="valor-total">Valor Total:</label>
             <input type="number" id="valor-total" placeholder="Valor Total">
-            
+
             <label for="parcelas">Número de Parcelas:</label>
             <input type="number" id="parcelas" placeholder="Número de Parcelas">
-            
+
             <label for="data-primeira-parcela">Data da Primeira Parcela:</label>
             <input type="date" id="data-primeira-parcela">
-            
+
             <label for="categoria-parcelado">Categoria:</label>
             <select id="categoria-parcelado">
                 <option value="Alimentação">Alimentação</option>
@@ -82,7 +84,7 @@
                 <option value="Saúde">Saúde</option>
                 <option value="Serviços">Serviços</option>
             </select>
-            
+
             <button onclick="adicionarGastoParcelado()">Adicionar Gasto</button>
             <button onclick="esconderFormularios()">Cancelar</button>
         </div>
@@ -110,11 +112,62 @@
         </div>
     </div>
 
-    <!-- Gráfico de Setor -->
-    <div class="grafico-section">
-        <canvas id="graficoPizza"></canvas>
+    <!-- Gráfico de Setor e Chat -->
+    <div class="grafico-chat-container">
+        <!-- Gráfico de Setor -->
+        <div class="grafico-section">
+            <canvas id="graficoPizza"></canvas>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="chat-container">
+            <!-- Área de mensagens (rolável) -->
+            <div class="chat-messages">
+                <div class="user-message">
+                    <div class="message-content">
+                        <p>eae cara, lembra do app que estavamos criando de controle de gastos no chat anterior?</p>
+                    </div>
+                </div>
+                <div class="response-message">
+                    <div class="avatar">
+                        <img src="https://storage.googleapis.com/a1aa/image/ACZHW3la297cCJRhNQXJ5Mcb9kUH2v5CtIvioKCK7mreIiEKA.jpg"
+                            alt="Avatar of the responder" width="40" height="40">
+                    </div>
+                    <div class="message-content">
+                        <p class="message-text">Eae, cara! Claro que lembro! A gente tava falando sobre criar um app de
+                            controle
+                            de gastos, né? A ideia era bem legal, com funcionalidades como categorização de despesas,
+                            gráficos
+                            pra visualizar os gastos, e até uma opção pra definir metas de economia.</p>
+                        <p class="message-text">Você já pensou em mais alguma coisa ou quer que a gente continue
+                            desenvolvendo a
+                            ideia? To dentro! 😎</p>
+                        <div class="message-actions">
+                            <i class="fas fa-copy"></i>
+                            <i class="fas fa-sync-alt"></i>
+                            <i class="fas fa-thumbs-up"></i>
+                            <i class="fas fa-thumbs-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de escrita da mensagem (fixa na parte inferior) -->
+            <div class="chat-input">
+                <textarea id="chat-message" placeholder="Digite sua mensagem..." rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-right">
+            <i class="fas fa-paperclip"></i>
+            <i class="fas fa-arrow-up"></i>
+        </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>

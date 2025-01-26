@@ -230,3 +230,55 @@ function registrarSaldo() {
     saldoInput.value = '';
     alert(`Saldo inicial registrado: R$ ${saldo.toFixed(2)}`);
 }
+
+// Função para enviar mensagem ao pressionar "Enter"
+document.getElementById('chat-message').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && !event.shiftKey) { // Envia a mensagem ao pressionar "Enter" sem o Shift
+        event.preventDefault(); // Impede a quebra de linha no textarea
+        enviarMensagem();
+    }
+});
+
+// Função para enviar mensagem
+function enviarMensagem() {
+    const chatInput = document.getElementById('chat-message');
+    const mensagem = chatInput.value.trim();
+
+    if (mensagem) {
+        // Adiciona a mensagem do usuário ao chat
+        const userMessage = document.createElement('div');
+        userMessage.classList.add('user-message');
+        userMessage.innerHTML = `
+            <div class="message-content">
+                <p>${mensagem}</p>
+            </div>
+        `;
+        document.querySelector('.chat-messages').appendChild(userMessage);
+
+        // Resposta automática "testes I.A"
+        const responseMessage = document.createElement('div');
+        responseMessage.classList.add('response-message');
+        responseMessage.innerHTML = `
+            <div class="avatar">
+                <img src="https://storage.googleapis.com/a1aa/image/ACZHW3la297cCJRhNQXJ5Mcb9kUH2v5CtIvioKCK7mreIiEKA.jpg" alt="Avatar of the responder" width="40" height="40">
+            </div>
+            <div class="message-content">
+                <p class="message-text">testes I.A</p>
+                <div class="message-actions">
+                    <i class="fas fa-copy"></i>
+                    <i class="fas fa-sync-alt"></i>
+                    <i class="fas fa-thumbs-up"></i>
+                    <i class="fas fa-thumbs-down"></i>
+                </div>
+            </div>
+        `;
+        document.querySelector('.chat-messages').appendChild(responseMessage);
+
+        // Limpa o campo de mensagem
+        chatInput.value = '';
+
+        // Rola a área de mensagens para a última mensagem
+        const chatMessages = document.querySelector('.chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+}

@@ -5,8 +5,8 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
 }
 
@@ -15,7 +15,17 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 50%;
+    width: 80%;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+.grafico-chat-container {
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .grafico-section {
@@ -23,7 +33,18 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 40%;
+}
+
+.chat-container {
+    background-color: #ffffff; /* Fundo branco */
+    color: #333; /* Texto escuro */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 400px; /* Altura fixa para o chat */
+    position: relative; /* Permite posicionar a área de envio corretamente */
 }
 
 h1 {
@@ -109,19 +130,18 @@ th {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #ffffff; /* Fundo branco */
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Garante que a tela de carregamento fique acima de tudo */
+    z-index: 1000;
 }
 
 .loading-logo {
-    max-width: 200px; /* Ajuste o tamanho da logo conforme necessário */
-    animation: pulse 1.5s infinite; /* Animação de pulsação */
+    max-width: 200px;
+    animation: pulse 1.5s infinite;
 }
 
-/* Animação de pulsação */
 @keyframes pulse {
     0% {
         transform: scale(1);
@@ -134,7 +154,6 @@ th {
     }
 }
 
-/* Esconde a tela de carregamento quando a página estiver carregada */
 #loading-screen.hidden {
     display: none;
 }
@@ -176,4 +195,130 @@ th {
 
 .form-gasto.hidden {
     display: none;
+}
+
+/* Estilos para o chat-container */
+.chat-container {
+    background-color: #ffffff; /* Fundo branco */
+    color: #333; /* Texto escuro */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 400px; /* Altura fixa para o chat */
+    position: relative; /* Permite posicionar a área de envio corretamente */
+}
+
+/* Estilos para a área de mensagens (rolável) */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto; /* Permite rolar as mensagens */
+    margin-bottom: 20px; /* Espaço para a área de envio */
+}
+
+/* Estilos para a área de envio (fixa na parte inferior) */
+.chat-input {
+    position: sticky;
+    bottom: 0;
+    background-color: #ffffff; /* Fundo branco */
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0; /* Borda cinza clara */
+}
+
+.chat-input textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0; /* Borda cinza clara */
+    border-radius: 10px;
+    background-color: #f9f9f9; /* Fundo cinza claro */
+    color: #333; /* Texto escuro */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    resize: none; /* Impede que o usuário redimensione manualmente */
+    outline: none;
+}
+
+.chat-input textarea::placeholder {
+    color: #999; /* Placeholder cinza */
+}
+
+.chat-input textarea:focus {
+    border-color: #4CAF50; /* Borda verde ao focar */
+}
+
+/* Estilos para as mensagens */
+.user-message, .response-message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.user-message .message-content {
+    background-color: #4CAF50; /* Fundo verde para mensagens do usuário */
+    color: #ffffff; /* Texto branco */
+    padding: 10px 20px;
+    border-radius: 20px;
+    max-width: 70%;
+}
+
+.response-message .message-content {
+    background-color: #f1f1f1; /* Fundo cinza claro para respostas */
+    color: #333; /* Texto escuro */
+    padding: 10px 20px;
+    border-radius: 20px;
+    max-width: 70%;
+}
+
+.response-message .avatar {
+    margin-right: 10px;
+}
+
+.response-message .avatar img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.message-content p {
+    margin: 0;
+}
+
+.message-content .message-text {
+    margin-bottom: 10px;
+}
+
+.message-content .message-actions {
+    display: flex;
+    align-items: center;
+}
+
+.message-content .message-actions i {
+    margin-right: 10px;
+    cursor: pointer;
+    color: #4CAF50; /* Ícones verdes */
+}
+
+/* Footer */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2d2d2d;
+    padding: 10px 20px;
+    border-top: 1px solid #3b3b3b;
+}
+
+.footer .footer-right {
+    display: flex;
+    align-items: center;
+}
+
+.footer .footer-right i {
+    margin-right: 10px;
+    cursor: pointer;
 }
