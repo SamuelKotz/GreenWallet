@@ -47,14 +47,15 @@ function esconderFormularios() {
 function adicionarGastoAvista() {
     const descricao = document.getElementById('descricao-avista').value;
     const valor = parseFloat(document.getElementById('valor-avista').value);
+    const data = document.getElementById('data-avista').value; // Captura a data
     const categoria = document.getElementById('categoria-avista').value;
 
-    if (descricao && valor && categoria) {
+    if (descricao && valor && categoria && data) {
         const gasto = {
             descricao: descricao,
             valor: valor,
             categoria: categoria,
-            data: new Date().toISOString().split('T')[0] // Data atual
+            data: data // Adiciona a data ao gasto
         };
 
         gastos.push(gasto);
@@ -68,6 +69,7 @@ function adicionarGastoAvista() {
         // Limpa os campos do formulário
         document.getElementById('descricao-avista').value = '';
         document.getElementById('valor-avista').value = '';
+        document.getElementById('data-avista').value = ''; // Limpa o campo de data
     } else {
         alert('Por favor, preencha todos os campos.');
     }
@@ -158,6 +160,7 @@ function atualizarExtrato() {
         extratoTbody.appendChild(row);
     });
 
+    // Adiciona o saldo atual ao extrato
     const saldoRow = document.createElement('tr');
     saldoRow.innerHTML = `
         <td><strong>Saldo Atual</strong></td>
@@ -226,9 +229,25 @@ function exportarParaExcel() {
 // Função para registrar o saldo inicial
 function registrarSaldo() {
     const saldoInput = document.getElementById('saldo');
-    saldo = parseFloat(saldoInput.value);
-    saldoInput.value = '';
-    alert(`Saldo inicial registrado: R$ ${saldo.toFixed(2)}`);
+    const feedback = document.getElementById('saldo-feedback');
+
+    if (saldoInput.value && !isNaN(saldoInput.value)) {
+        saldo = parseFloat(saldoInput.value);
+        saldoInput.value = '';
+
+        // Exibe feedback de sucesso
+        feedback.textContent = `Saldo inicial registrado: R$ ${saldo.toFixed(2)}`;
+        feedback.classList.remove('error', 'hidden');
+        feedback.classList.add('success');
+    } else {
+        // Exibe feedback de erro
+        feedback.textContent = 'Por favor, insira um valor válido para o saldo.';
+        feedback.classList.remove('success', 'hidden');
+        feedback.classList.add('error');
+    }
+
+    // Atualiza o extrato
+    atualizarExtrato();
 }
 
 // Função para enviar mensagem ao pressionar "Enter"

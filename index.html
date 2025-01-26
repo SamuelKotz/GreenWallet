@@ -23,6 +23,7 @@
             <label for="saldo">Saldo Inicial:</label>
             <input type="number" id="saldo" placeholder="Digite seu saldo">
             <button onclick="registrarSaldo()">Registrar Saldo</button>
+            <div id="saldo-feedback" class="feedback-message hidden"></div> <!-- Feedback aqui -->
         </div>
 
         <!-- Botões para Adicionar Gastos -->
@@ -39,6 +40,9 @@
 
             <label for="valor-avista">Valor do Gasto:</label>
             <input type="number" id="valor-avista" placeholder="Valor">
+
+            <label for="data-avista">Data do Gasto:</label> <!-- Novo campo de data -->
+            <input type="date" id="data-avista">
 
             <label for="categoria-avista">Categoria:</label>
             <select id="categoria-avista">
