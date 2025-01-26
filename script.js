@@ -82,14 +82,15 @@ function esconderFormularios() {
 function adicionarGastoAvista() {
     const descricao = document.getElementById('descricao-avista').value;
     const valor = parseFloat(document.getElementById('valor-avista').value);
+    const data = document.getElementById('data-avista').value;
     const categoria = document.getElementById('categoria-avista').value;
 
-    if (descricao && valor && categoria) {
+    if (descricao && valor && data && categoria) {
         const gasto = {
             descricao: descricao,
             valor: valor,
             categoria: categoria,
-            data: new Date().toISOString().split('T')[0] // Data atual
+            data: data // Adiciona a data do gasto
         };
 
         gastos.push(gasto);
@@ -103,6 +104,7 @@ function adicionarGastoAvista() {
         // Limpa os campos do formulário
         document.getElementById('descricao-avista').value = '';
         document.getElementById('valor-avista').value = '';
+        document.getElementById('data-avista').value = '';
     } else {
         alert('Por favor, preencha todos os campos.');
     }

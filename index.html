@@ -38,6 +38,9 @@
             <label for="valor-avista">Valor do Gasto:</label>
             <input type="number" id="valor-avista" placeholder="Valor">
             
+            <label for="data-avista">Data do Gasto:</label>
+            <input type="date" id="data-avista">
+            
             <label for="categoria-avista">Categoria:</label>
             <select id="categoria-avista">
                 <option value="Alimentação">Alimentação</option>
@@ -110,17 +113,17 @@
         </div>
     </div>
 
-        <!-- Janela de Confirmação -->
+    <!-- Gráfico de Setor -->
+    <div class="grafico-section">
+        <canvas id="graficoPizza"></canvas>
+    </div>
+
+    <!-- Janela de Confirmação -->
     <div id="confirmation-overlay" class="hidden">
         <div id="confirmation-window">
             <p id="confirmation-message"></p>
             <button id="confirmation-button" onclick="fecharJanelaConfirmacao()">Continuar</button>
         </div>
-    </div>
-
-    <!-- Gráfico de Setor -->
-    <div class="grafico-section">
-        <canvas id="graficoPizza"></canvas>
     </div>
 
     <script src="script.js"></script>
