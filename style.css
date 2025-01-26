@@ -303,22 +303,49 @@ th {
     color: #4CAF50; /* Ícones verdes */
 }
 
-/* Estilos para o feedback */
-.feedback-message {
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 4px;
+/* Estilos para o modal */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001; /* Fica acima do overlay */
     text-align: center;
 }
 
-.feedback-message.success {
-    background-color: #d4edda; /* Verde claro */
-    color: #155724; /* Verde escuro */
+.modal-content p {
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
-.feedback-message.error {
-    background-color: #f8d7da; /* Vermelho claro */
-    color: #721c24; /* Vermelho escuro */
+.modal-content button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-content button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos para o overlay (fundo borrado) */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px); /* Efeito de blur */
+    z-index: 1000; /* Fica acima de tudo, exceto o modal */
 }
 
 .hidden {

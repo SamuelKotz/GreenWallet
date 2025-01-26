@@ -23,7 +23,6 @@
             <label for="saldo">Saldo Inicial:</label>
             <input type="number" id="saldo" placeholder="Digite seu saldo">
             <button onclick="registrarSaldo()">Registrar Saldo</button>
-            <div id="saldo-feedback" class="feedback-message hidden"></div> <!-- Feedback aqui -->
         </div>
 
         <!-- Botões para Adicionar Gastos -->
@@ -129,7 +128,7 @@
             <div class="chat-messages">
                 <div class="user-message">
                     <div class="message-content">
-                        <p>eae cara, lembra do app que estavamos criando de controle de gastos no chat anterior?</p>
+                        <p>Olá, como você se chama?</p>
                     </div>
                 </div>
                 <div class="response-message">
@@ -138,14 +137,7 @@
                             alt="Avatar of the responder" width="40" height="40">
                     </div>
                     <div class="message-content">
-                        <p class="message-text">Eae, cara! Claro que lembro! A gente tava falando sobre criar um app de
-                            controle
-                            de gastos, né? A ideia era bem legal, com funcionalidades como categorização de despesas,
-                            gráficos
-                            pra visualizar os gastos, e até uma opção pra definir metas de economia.</p>
-                        <p class="message-text">Você já pensou em mais alguma coisa ou quer que a gente continue
-                            desenvolvendo a
-                            ideia? To dentro! 😎</p>
+                        <p class="message-text">Olá! Eu sou o FinBot, seu assistente finaceiro baseado em IA, como posso te ajudar hoje?</p>
                         <div class="message-actions">
                             <i class="fas fa-copy"></i>
                             <i class="fas fa-sync-alt"></i>
@@ -162,6 +154,17 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de Feedback -->
+    <div id="modal-feedback" class="modal hidden">
+        <div class="modal-content">
+            <p id="modal-message">Saldo <span id="saldo-registrado"></span> registrado com sucesso!</p>
+            <button id="modal-continuar">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Overlay para o efeito de blur -->
+    <div id="overlay" class="overlay hidden"></div>
 
     <!-- Footer -->
     <div class="footer">

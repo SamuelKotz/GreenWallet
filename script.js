@@ -229,26 +229,42 @@ function exportarParaExcel() {
 // Função para registrar o saldo inicial
 function registrarSaldo() {
     const saldoInput = document.getElementById('saldo');
-    const feedback = document.getElementById('saldo-feedback');
+    const modal = document.getElementById('modal-feedback');
+    const overlay = document.getElementById('overlay');
+    const saldoRegistrado = document.getElementById('saldo-registrado');
 
     if (saldoInput.value && !isNaN(saldoInput.value)) {
         saldo = parseFloat(saldoInput.value);
         saldoInput.value = '';
 
-        // Exibe feedback de sucesso
-        feedback.textContent = `Saldo inicial registrado: R$ ${saldo.toFixed(2)}`;
-        feedback.classList.remove('error', 'hidden');
-        feedback.classList.add('success');
-    } else {
-        // Exibe feedback de erro
-        feedback.textContent = 'Por favor, insira um valor válido para o saldo.';
-        feedback.classList.remove('success', 'hidden');
-        feedback.classList.add('error');
-    }
+        // Exibe o valor do saldo no modal
+        saldoRegistrado.textContent = `R$ ${saldo.toFixed(2)}`;
 
-    // Atualiza o extrato
-    atualizarExtrato();
+        // Mostra o modal e o overlay
+        modal.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+
+        // Configura o timeout para fechar o modal após 10 segundos
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+        }, 10000); // 10 segundos
+
+        // Atualiza o extrato
+        atualizarExtrato();
+    } else {
+        alert('Por favor, insira um valor válido para o saldo.');
+    }
 }
+
+// Fecha o modal ao clicar no botão "Continuar"
+document.getElementById('modal-continuar').addEventListener('click', () => {
+    const modal = document.getElementById('modal-feedback');
+    const overlay = document.getElementById('overlay');
+
+    modal.classList.add('hidden');
+    overlay.classList.add('hidden');
+});
 
 // Função para enviar mensagem ao pressionar "Enter"
 document.getElementById('chat-message').addEventListener('keydown', function (event) {
