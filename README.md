@@ -110,3 +110,7 @@ git clone https://github.com/SamuelKotz/GreenWallet.git
 - Foco no Controle Mensal:
   O aplicativo foi ajustado para ser um controle de gastos mensal, exibindo apenas os gastos do mês atual.
 
+- Testes Iniciais com IA:
+  O aplicativo recebeu uma integração com uma IA que será um auxiliar financeiro. Como esta é a branch "testes", a UI foi modificada para testar, mas será alterada para algo parecido com a branch "main", com ajustes mais finos
+  
+
