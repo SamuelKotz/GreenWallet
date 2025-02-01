@@ -1,6 +1,10 @@
+// Chave da API do Gemini - Substitua pela sua chave
+const API_KEY = "SUA_CHAVE_AQUI";
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
 let saldo = 0;
 let gastos = [];
-let parcelasFuturas = []; // Lista de parcelas futuras
+let parcelasFuturas = [];
 let categorias = {
     "Alimentação": 0,
     "Lazer": 0,
@@ -16,66 +20,50 @@ let categorias = {
 const ctx = document.getElementById('graficoPizza').getContext('2d');
 let graficoPizza;
 
-// Tela de Carregamento
+// Tela de carregamento
 window.addEventListener('load', () => {
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) {
         setTimeout(() => {
-            loadingScreen.classList.add('hidden'); // Esconde a tela de carregamento após 3 segundos
+            loadingScreen.classList.add('hidden');
         }, 5000);
     }
-    verificarParcelasDoMes(); // Verifica se há parcelas para o mês atual
+    verificarParcelasDoMes();
 });
 
-// Função para mostrar o formulário correspondente
+// Função para mostrar e esconder formulários
 function mostrarFormulario(tipo) {
-    esconderFormularios(); // Esconde todos os formulários primeiro
-    if (tipo === 'avista') {
-        document.getElementById('form-avista').classList.remove('hidden');
-    } else if (tipo === 'parcelado') {
-        document.getElementById('form-parcelado').classList.remove('hidden');
-    }
+    esconderFormularios();
+    document.getElementById(`form-${tipo}`).classList.remove('hidden');
 }
 
-// Função para esconder todos os formulários
 function esconderFormularios() {
     document.getElementById('form-avista').classList.add('hidden');
     document.getElementById('form-parcelado').classList.add('hidden');
 }
 
-// Função para adicionar gasto à vista
+// Adicionar gasto à vista
 function adicionarGastoAvista() {
     const descricao = document.getElementById('descricao-avista').value;
     const valor = parseFloat(document.getElementById('valor-avista').value);
-    const data = document.getElementById('data-avista').value; // Captura a data
+    const data = document.getElementById('data-avista').value;
     const categoria = document.getElementById('categoria-avista').value;
 
     if (descricao && valor && categoria && data) {
-        const gasto = {
-            descricao: descricao,
-            valor: valor,
-            categoria: categoria,
-            data: data // Adiciona a data ao gasto
-        };
-
-        gastos.push(gasto);
+        gastos.push({ descricao, valor, categoria, data });
         categorias[categoria] += valor;
         saldo -= valor;
 
         atualizarExtrato();
         atualizarGrafico();
         esconderFormularios();
-
-        // Limpa os campos do formulário
-        document.getElementById('descricao-avista').value = '';
-        document.getElementById('valor-avista').value = '';
-        document.getElementById('data-avista').value = ''; // Limpa o campo de data
+        limparCampos(['descricao-avista', 'valor-avista', 'data-avista']);
     } else {
         alert('Por favor, preencha todos os campos.');
     }
 }
 
-// Função para adicionar gasto parcelado
+// Adicionar gasto parcelado
 function adicionarGastoParcelado() {
     const descricao = document.getElementById('descricao-parcelado').value;
     const valorTotal = parseFloat(document.getElementById('valor-total').value);
@@ -85,7 +73,6 @@ function adicionarGastoParcelado() {
 
     if (descricao && valorTotal && parcelas && dataPrimeiraParcela && categoria) {
         const valorParcela = valorTotal / parcelas;
-
         for (let i = 0; i < parcelas; i++) {
             const dataParcela = new Date(dataPrimeiraParcela);
             dataParcela.setMonth(dataPrimeiraParcela.getMonth() + i);
@@ -94,16 +81,14 @@ function adicionarGastoParcelado() {
                 descricao: `${descricao} (Parcela ${i + 1}/${parcelas})`,
                 valor: valorParcela,
                 categoria: categoria,
-                data: dataParcela.toISOString().split('T')[0] // Formato YYYY-MM-DD
+                data: dataParcela.toISOString().split('T')[0]
             };
 
             if (dataParcela.getMonth() === new Date().getMonth() && dataParcela.getFullYear() === new Date().getFullYear()) {
-                // Se a parcela for do mês atual, adiciona ao extrato
                 gastos.push(gasto);
                 categorias[categoria] += valorParcela;
                 saldo -= valorParcela;
             } else {
-                // Caso contrário, adiciona à lista de parcelas futuras
                 parcelasFuturas.push(gasto);
             }
         }
@@ -111,40 +96,33 @@ function adicionarGastoParcelado() {
         atualizarExtrato();
         atualizarGrafico();
         esconderFormularios();
-
-        // Limpa os campos do formulário
-        document.getElementById('descricao-parcelado').value = '';
-        document.getElementById('valor-total').value = '';
-        document.getElementById('parcelas').value = '';
-        document.getElementById('data-primeira-parcela').value = '';
+        limparCampos(['descricao-parcelado', 'valor-total', 'parcelas', 'data-primeira-parcela']);
     } else {
         alert('Por favor, preencha todos os campos.');
     }
 }
 
-// Função para verificar parcelas do mês atual
+// Verifica parcelas do mês atual
 function verificarParcelasDoMes() {
     const mesAtual = new Date().getMonth();
     const anoAtual = new Date().getFullYear();
 
     parcelasFuturas = parcelasFuturas.filter(parcela => {
         const dataParcela = new Date(parcela.data);
-
         if (dataParcela.getMonth() === mesAtual && dataParcela.getFullYear() === anoAtual) {
-            // Se a parcela for do mês atual, adiciona ao extrato
             gastos.push(parcela);
             categorias[parcela.categoria] += parcela.valor;
             saldo -= parcela.valor;
-            return false; // Remove da lista de parcelas futuras
+            return false;
         }
-        return true; // Mantém na lista de parcelas futuras
+        return true;
     });
 
     atualizarExtrato();
     atualizarGrafico();
 }
 
-// Função para atualizar o extrato
+// Atualizar extrato
 function atualizarExtrato() {
     const extratoTbody = document.querySelector('#extrato tbody');
     extratoTbody.innerHTML = '';
@@ -155,12 +133,11 @@ function atualizarExtrato() {
             <td>${gasto.descricao}</td>
             <td>R$ ${gasto.valor.toFixed(2)}</td>
             <td>${gasto.categoria}</td>
-            <td>${gasto.data || ''}</td> <!-- Exibe a data, se existir -->
+            <td>${gasto.data || ''}</td>
         `;
         extratoTbody.appendChild(row);
     });
 
-    // Adiciona o saldo atual ao extrato
     const saldoRow = document.createElement('tr');
     saldoRow.innerHTML = `
         <td><strong>Saldo Atual</strong></td>
@@ -171,11 +148,9 @@ function atualizarExtrato() {
     extratoTbody.appendChild(saldoRow);
 }
 
-// Função para atualizar o gráfico
+// Atualizar gráfico
 function atualizarGrafico() {
-    if (graficoPizza) {
-        graficoPizza.destroy();
-    }
+    if (graficoPizza) graficoPizza.destroy();
 
     graficoPizza = new Chart(ctx, {
         type: 'pie',
@@ -183,11 +158,7 @@ function atualizarGrafico() {
             labels: Object.keys(categorias),
             datasets: [{
                 data: Object.values(categorias),
-                backgroundColor: [
-                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-                    '#9966FF', '#FF9F40', '#C9CBCF', '#4D5360',
-                    '#F7464A'
-                ]
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
             }]
         },
         options: {
@@ -197,9 +168,8 @@ function atualizarGrafico() {
     });
 }
 
-// Função para exportar para Excel
+// Exportar para Excel
 function exportarParaExcel() {
-    // Cria um array com os dados dos gastos
     const dados = gastos.map(gasto => ({
         Descrição: gasto.descricao,
         Valor: gasto.valor,
@@ -207,113 +177,59 @@ function exportarParaExcel() {
         Data: gasto.data || ''
     }));
 
-    // Adiciona o saldo atual como uma linha adicional
-    dados.push({
-        Descrição: "Saldo Atual",
-        Valor: saldo,
-        Categoria: "",
-        Data: ""
-    });
+    dados.push({ Descrição: "Saldo Atual", Valor: saldo, Categoria: "", Data: "" });
 
-    // Cria uma planilha com os dados
     const worksheet = XLSX.utils.json_to_sheet(dados);
-
-    // Cria um workbook e adiciona a planilha
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Gastos");
 
-    // Gera o arquivo Excel
     XLSX.writeFile(workbook, "gastos.xlsx");
 }
 
-// Função para registrar o saldo inicial
+// Registra saldo inicial
 function registrarSaldo() {
     const saldoInput = document.getElementById('saldo');
-    const modal = document.getElementById('modal-feedback');
-    const overlay = document.getElementById('overlay');
-    const saldoRegistrado = document.getElementById('saldo-registrado');
-
-    if (saldoInput.value && !isNaN(saldoInput.value)) {
-        saldo = parseFloat(saldoInput.value);
-        saldoInput.value = '';
-
-        // Exibe o valor do saldo no modal
-        saldoRegistrado.textContent = `R$ ${saldo.toFixed(2)}`;
-
-        // Mostra o modal e o overlay
-        modal.classList.remove('hidden');
-        overlay.classList.remove('hidden');
-
-        // Configura o timeout para fechar o modal após 10 segundos
-        setTimeout(() => {
-            modal.classList.add('hidden');
-            overlay.classList.add('hidden');
-        }, 10000); // 10 segundos
-
-        // Atualiza o extrato
-        atualizarExtrato();
-    } else {
-        alert('Por favor, insira um valor válido para o saldo.');
-    }
+    saldo = parseFloat(saldoInput.value);
+    saldoInput.value = '';
+    atualizarExtrato();
 }
 
-// Fecha o modal ao clicar no botão "Continuar"
-document.getElementById('modal-continuar').addEventListener('click', () => {
-    const modal = document.getElementById('modal-feedback');
-    const overlay = document.getElementById('overlay');
-
-    modal.classList.add('hidden');
-    overlay.classList.add('hidden');
-});
-
-// Função para enviar mensagem ao pressionar "Enter"
-document.getElementById('chat-message').addEventListener('keydown', function (event) {
-    if (event.key === 'Enter' && !event.shiftKey) { // Envia a mensagem ao pressionar "Enter" sem o Shift
-        event.preventDefault(); // Impede a quebra de linha no textarea
-        enviarMensagem();
-    }
-});
-
-// Função para enviar mensagem
-function enviarMensagem() {
+// --------- INTEGRAÇÃO COM IA (Gemini) ---------
+async function enviarMensagemGemini() {
     const chatInput = document.getElementById('chat-message');
     const mensagem = chatInput.value.trim();
+    if (!mensagem) return;
 
-    if (mensagem) {
-        // Adiciona a mensagem do usuário ao chat
-        const userMessage = document.createElement('div');
-        userMessage.classList.add('user-message');
-        userMessage.innerHTML = `
-            <div class="message-content">
-                <p>${mensagem}</p>
-            </div>
-        `;
-        document.querySelector('.chat-messages').appendChild(userMessage);
+    adicionarMensagemAoChat(mensagem, "user");
 
-        // Resposta automática "testes I.A"
-        const responseMessage = document.createElement('div');
-        responseMessage.classList.add('response-message');
-        responseMessage.innerHTML = `
-            <div class="avatar">
-                <img src="https://storage.googleapis.com/a1aa/image/ACZHW3la297cCJRhNQXJ5Mcb9kUH2v5CtIvioKCK7mreIiEKA.jpg" alt="Avatar of the responder" width="40" height="40">
-            </div>
-            <div class="message-content">
-                <p class="message-text">testes I.A</p>
-                <div class="message-actions">
-                    <i class="fas fa-copy"></i>
-                    <i class="fas fa-sync-alt"></i>
-                    <i class="fas fa-thumbs-up"></i>
-                    <i class="fas fa-thumbs-down"></i>
-                </div>
-            </div>
-        `;
-        document.querySelector('.chat-messages').appendChild(responseMessage);
+    try {
+        const resposta = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ role: "user", parts: [{ text: mensagem }] }]
+            })
+        });
 
-        // Limpa o campo de mensagem
-        chatInput.value = '';
+        const data = await resposta.json();
 
-        // Rola a área de mensagens para a última mensagem
-        const chatMessages = document.querySelector('.chat-messages');
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Ajustando para pegar corretamente a resposta do Gemini
+        const respostaIA = data.candidates?.[0]?.content?.parts?.[0]?.text || "Desculpe, não consegui entender.";
+
+        adicionarMensagemAoChat(respostaIA, "ai");
+    } catch (erro) {
+        console.error("Erro ao conectar com a API Gemini:", erro);
+        adicionarMensagemAoChat("Erro ao conectar com a IA.", "ai");
     }
+
+    chatInput.value = "";
+}
+
+function adicionarMensagemAoChat(texto, tipo) {
+    const chatMessages = document.getElementById("chat-messages");
+    const mensagemDiv = document.createElement("div");
+    mensagemDiv.classList.add(tipo === "user" ? "user-message" : "response-message");
+    mensagemDiv.innerHTML = `<div class="message-content"><p>${texto}</p></div>`;
+    chatMessages.appendChild(mensagemDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
