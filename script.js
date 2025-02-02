@@ -207,13 +207,18 @@ async function enviarMensagemGemini() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                contents: [{ role: "user", parts: [{ text: mensagem }] }]
+                contents: [{ 
+                    role: "user", 
+                    parts: [{ text: `Aja como um especialista financeiro, que ajudara usuários que desejam organizar suas finanças e que querem tirar dúvidas sobre o mercado financeiro e planejamento pessoal de gastos. Seja consideravelmente breve e direto (algo como 100-350 tokens de saída): ${mensagem}` }] 
+                }],
+                generationConfig: {
+                    temperature: 0.7,   // 🔹 Controla a criatividade
+                    maxOutputTokens: 500 // 🔹 Corrigido para `maxOutputTokens`
+                }
             })
         });
 
         const data = await resposta.json();
-
-        // Ajustando para pegar corretamente a resposta do Gemini
         const respostaIA = data.candidates?.[0]?.content?.parts?.[0]?.text || "Desculpe, não consegui entender.";
 
         adicionarMensagemAoChat(respostaIA, "ai");
@@ -224,6 +229,7 @@ async function enviarMensagemGemini() {
 
     chatInput.value = "";
 }
+
 
 function adicionarMensagemAoChat(texto, tipo) {
     const chatMessages = document.getElementById("chat-messages");
