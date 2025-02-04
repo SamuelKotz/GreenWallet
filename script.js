@@ -1,4 +1,4 @@
-// Chave da API do Gemini - Substitua pela sua chave
+// IA Utilizada: Gemini 1.5 Flash (API Google)
 const API_KEY = "SUA_CHAVE_AQUI";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
@@ -31,7 +31,7 @@ window.addEventListener('load', () => {
     verificarParcelasDoMes();
 });
 
-// Função para mostrar e esconder formulários
+// Planner de Gastos
 function mostrarFormulario(tipo) {
     esconderFormularios();
     document.getElementById(`form-${tipo}`).classList.remove('hidden');
@@ -42,7 +42,7 @@ function esconderFormularios() {
     document.getElementById('form-parcelado').classList.add('hidden');
 }
 
-// Adicionar gasto à vista
+
 function adicionarGastoAvista() {
     const descricao = document.getElementById('descricao-avista').value;
     const valor = parseFloat(document.getElementById('valor-avista').value);
@@ -63,7 +63,7 @@ function adicionarGastoAvista() {
     }
 }
 
-// Adicionar gasto parcelado
+
 function adicionarGastoParcelado() {
     const descricao = document.getElementById('descricao-parcelado').value;
     const valorTotal = parseFloat(document.getElementById('valor-total').value);
@@ -102,7 +102,7 @@ function adicionarGastoParcelado() {
     }
 }
 
-// Verifica parcelas do mês atual
+
 function verificarParcelasDoMes() {
     const mesAtual = new Date().getMonth();
     const anoAtual = new Date().getFullYear();
@@ -122,7 +122,7 @@ function verificarParcelasDoMes() {
     atualizarGrafico();
 }
 
-// Atualizar extrato
+
 function atualizarExtrato() {
     const extratoTbody = document.querySelector('#extrato tbody');
     extratoTbody.innerHTML = '';
@@ -148,7 +148,7 @@ function atualizarExtrato() {
     extratoTbody.appendChild(saldoRow);
 }
 
-// Atualizar gráfico
+// Gráfico de gastos
 function atualizarGrafico() {
     if (graficoPizza) graficoPizza.destroy();
 
@@ -168,7 +168,7 @@ function atualizarGrafico() {
     });
 }
 
-// Exportar para Excel
+// Função extrato para arquivo excel
 function exportarParaExcel() {
     const dados = gastos.map(gasto => ({
         Descrição: gasto.descricao,
@@ -212,8 +212,8 @@ async function enviarMensagemGemini() {
                     parts: [{ text: `Aja como um especialista financeiro, que ajudara usuários que desejam organizar suas finanças e que querem tirar dúvidas sobre o mercado financeiro e planejamento pessoal de gastos. Seja consideravelmente breve e direto (algo como 100-350 tokens de saída): ${mensagem}` }] 
                 }],
                 generationConfig: {
-                    temperature: 0.7,   // 🔹 Controla a criatividade
-                    maxOutputTokens: 500 // 🔹 Corrigido para `maxOutputTokens`
+                    temperature: 0.7,   
+                    maxOutputTokens: 500 
                 }
             })
         });
