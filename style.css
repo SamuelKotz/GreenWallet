@@ -12,10 +12,10 @@ body {
 
 .container {
     background-color: #fff;
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 50%;
+    width: 45%;
 }
 
 .grafico-section {
@@ -24,7 +24,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 95%; /* Largura ocupando 95% do contêiner */
-    height: 350px; /* Altura fixa de 350 pixels */
+    height: 320px; /* Altura fixa de 350 pixels */
     margin: 0 auto; /* Centraliza as seções horizontalmente */
     grid-column: 1; /* Ocupa a primeira coluna */
     grid-row: 1; /* Ocupa a primeira linha */
@@ -183,7 +183,7 @@ th {
 }
 
 /* Estilos da Janela de Confirmação */
-#confirmation-overlay {
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -197,36 +197,17 @@ th {
     z-index: 1001; /* Garante que fique acima de tudo */
 }
 
-#confirmation-overlay.hidden {
+.overlay.hidden {
     display: none;
 }
 
-#confirmation-window {
+.window {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     max-width: 300px;
-}
-
-#confirmation-message {
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-#confirmation-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#confirmation-button:hover {
-    background-color: #45a049;
 }
 
 /* Estilos da Seção de Metas */
@@ -246,7 +227,7 @@ th {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     grid-column: 1; /* Ocupa a primeira coluna */
     width: 95%; /* Largura ocupando 95% do contêiner */
-    height: 350px; /* Altura fixa de 350 pixels */
+    height: 320px; /* Altura fixa de 350 pixels */
     margin: 0 auto; /* Centraliza as seções horizontalmente */
     grid-row: 2; /* Ocupa a segunda linha */
 }

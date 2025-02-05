@@ -330,3 +330,12 @@ function carregarDados() {
         atualizarProgressoMeta();
     }
 }
+
+function exibirJanelaFeedbackMeta(mensagem) {
+    document.getElementById('meta-feedback-message').textContent = mensagem;
+    document.getElementById('meta-feedback-overlay').classList.remove('hidden');
+}
+
+function fecharJanelaFeedbackMeta() {
+    document.getElementById('meta-feedback-overlay').classList.add('hidden');
+}
