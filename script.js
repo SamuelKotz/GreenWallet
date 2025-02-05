@@ -12,6 +12,12 @@ let categorias = {
     "Saúde": 0,
     "Serviços": 0
 };
+let meta = {
+    valor: 0,
+    prazo: 0,
+    dataCriacao: null
+};
+
 
 const ctx = document.getElementById('graficoPizza').getContext('2d');
 let graficoPizza;
@@ -258,4 +264,69 @@ function exportarParaExcel() {
 
     // Gera o arquivo Excel
     XLSX.writeFile(workbook, "gastos.xlsx");
+}
+
+function definirMeta() {
+    const valorMeta = parseFloat(document.getElementById('valor-meta').value);
+    const prazoMeta = parseInt(document.getElementById('prazo-meta').value);
+
+    if (valorMeta > 0 && prazoMeta > 0) {
+        meta.valor = valorMeta;
+        meta.prazo = prazoMeta;
+        meta.dataCriacao = new Date();
+        atualizarProgressoMeta();
+        salvarDados();
+        alert('Meta definida com sucesso!');
+    } else {
+        alert('Por favor, insira valores válidos (maiores que zero).');
+    }
+}
+
+// Adicione esta função para atualizar o progresso
+function atualizarProgressoMeta() {
+    if (meta.valor > 0) {
+        const mesesDecorridos = Math.floor((new Date() - meta.dataCriacao) / (1000 * 60 * 60 * 24 * 30));
+        const progressoTemporal = Math.min((mesesDecorridos / meta.prazo) * 100, 100);
+        const progressoFinanceiro = (saldo / meta.valor) * 100;
+        const progressoTotal = Math.min(progressoTemporal, progressoFinanceiro);
+
+        document.getElementById('progresso-valor').textContent = `${progressoTotal.toFixed(1)}%`;
+        document.getElementById('barra-progresso-interna').style.width = `${progressoTotal}%`;
+    }
+}
+
+function salvarDados() {
+    const dados = {
+        saldo,
+        gastos,
+        parcelasFuturas,
+        categorias,
+        meta
+    };
+    localStorage.setItem('greenWalletData', JSON.stringify(dados));
+}
+
+function carregarDados() {
+    const dados = JSON.parse(localStorage.getItem('greenWalletData'));
+    if (dados) {
+        saldo = dados.saldo || 0;
+        gastos = dados.gastos || [];
+        parcelasFuturas = dados.parcelasFuturas || [];
+        categorias = dados.categorias || {
+            "Alimentação": 0,
+            "Lazer": 0,
+            "Despesa Fixa": 0,
+            "Pessoal": 0,
+            "Assinaturas": 0,
+            "Casa": 0,
+            "Educação": 0,
+            "Saúde": 0,
+            "Serviços": 0
+        };
+        meta = dados.meta || { valor: 0, prazo: 0, dataCriacao: null };
+        if (meta.dataCriacao) meta.dataCriacao = new Date(meta.dataCriacao);
+        atualizarExtrato();
+        atualizarGrafico();
+        atualizarProgressoMeta();
+    }
 }

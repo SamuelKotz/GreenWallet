@@ -23,7 +23,11 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 40%;
+    width: 95%; /* Largura ocupando 95% do contêiner */
+    height: 350px; /* Altura fixa de 350 pixels */
+    margin: 0 auto; /* Centraliza as seções horizontalmente */
+    grid-column: 1; /* Ocupa a primeira coluna */
+    grid-row: 1; /* Ocupa a primeira linha */
 }
 
 h1 {
@@ -224,4 +228,67 @@ th {
 #confirmation-button:hover {
     background-color: #45a049;
 }
+
+/* Estilos da Seção de Metas */
+.grafico-chat-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Uma coluna */
+    grid-template-rows: 1fr 1fr; /* Duas linhas */
+    gap: 20px; /* Espaçamento entre os elementos */
+    grid-column: 2; /* Ocupa a segunda coluna */
+    grid-row: 1 / 3; /* Ocupa as linhas 1 e 2 (toda a altura) */
+}
+
+.meta-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    grid-column: 1; /* Ocupa a primeira coluna */
+    width: 95%; /* Largura ocupando 95% do contêiner */
+    height: 350px; /* Altura fixa de 350 pixels */
+    margin: 0 auto; /* Centraliza as seções horizontalmente */
+    grid-row: 2; /* Ocupa a segunda linha */
+}
+
+.meta-inputs {
+    display: grid;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.meta-inputs input {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+.progresso-container {
+    margin-top: 20px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.progresso-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.barra-progresso {
+    height: 20px;
+    background-color: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#barra-progresso-interna {
+    height: 100%;
+    width: 0%;
+    background-color: #4CAF50;
+    transition: width 0.3s ease;
+}
+
 
