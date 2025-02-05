@@ -1,167 +1,164 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GreenWallet</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 </head>
-
-<body>
-    <div id="loading-screen">
-        <img src="logo.svg" alt="GreenWallet Logo" class="loading-logo">
+<body class="bg-gray-100 p-5">
+    <!-- Tela de Carregamento -->
+    <div id="loading-screen" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <img src="logo.svg" alt="GreenWallet Logo" class="w-48 animate-pulse">
     </div>
 
-    <div class="container">
-        <div class="saldo-section">
-            <label for="saldo">Saldo Inicial:</label>
-            <input type="number" id="saldo" placeholder="Digite seu saldo">
-            <button onclick="registrarSaldo()">Registrar Saldo</button>
-        </div>
+    <!-- Container Principal -->
+    <div class="container mx-auto flex flex-col lg:flex-row gap-5">
+        <!-- Seção de Saldo e Gastos -->
+        <div class="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
+            <div class="saldo-section mb-6">
+                <label for="saldo" class="block text-gray-700 font-bold mb-2">Saldo Inicial:</label>
+                <input type="number" id="saldo" placeholder="Digite seu saldo" class="w-full p-2 border border-gray-300 rounded mb-3">
+                <button onclick="registrarSaldo()" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Registrar Saldo</button>
+            </div>
 
-        <div class="botoes-gastos">
-            <button onclick="mostrarFormulario('avista')">Adicionar Gasto à Vista</button>
-            <button onclick="mostrarFormulario('parcelado')">Adicionar Gasto Parcelado</button>
-        </div>
+            <div class="botoes-gastos flex gap-3 mb-6">
+                <button onclick="mostrarFormulario('avista')" class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto à Vista</button>
+                <button onclick="mostrarFormulario('parcelado')" class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto Parcelado</button>
+            </div>
 
-        <div id="form-avista" class="form-gasto hidden">
-            <h3>Adicionar Gasto à Vista</h3>
-            <label for="descricao-avista">Descrição do Gasto:</label>
-            <input type="text" id="descricao-avista" placeholder="Descrição">
+            <!-- Formulário de Gasto à Vista -->
+            <div id="form-avista" class="form-gasto hidden bg-gray-50 p-4 rounded-lg mb-6">
+                <h3 class="text-xl font-bold text-green-600 mb-4">Adicionar Gasto à Vista</h3>
+                <label for="descricao-avista" class="block text-gray-700 mb-2">Descrição do Gasto:</label>
+                <input type="text" id="descricao-avista" placeholder="Descrição" class="w-full p-2 border border-gray-300 rounded mb-3">
 
-            <label for="valor-avista">Valor do Gasto:</label>
-            <input type="number" id="valor-avista" placeholder="Valor">
+                <label for="valor-avista" class="block text-gray-700 mb-2">Valor do Gasto:</label>
+                <input type="number" id="valor-avista" placeholder="Valor" class="w-full p-2 border border-gray-300 rounded mb-3">
 
-            <label for="data-avista">Data do Gasto:</label>
-            <input type="date" id="data-avista">
+                <label for="data-avista" class="block text-gray-700 mb-2">Data do Gasto:</label>
+                <input type="date" id="data-avista" class="w-full p-2 border border-gray-300 rounded mb-3">
 
-            <label for="categoria-avista">Categoria:</label>
-            <select id="categoria-avista">
-                <option value="Alimentação">Alimentação</option>
-                <option value="Lazer">Lazer</option>
-                <option value="Despesa Fixa">Despesa Fixa</option>
-                <option value="Pessoal">Pessoal</option>
-                <option value="Assinaturas">Assinaturas</option>
-                <option value="Casa">Casa</option>
-                <option value="Educação">Educação</option>
-                <option value="Saúde">Saúde</option>
-                <option value="Serviços">Serviços</option>
-            </select>
+                <label for="categoria-avista" class="block text-gray-700 mb-2">Categoria:</label>
+                <select id="categoria-avista" class="w-full p-2 border border-gray-300 rounded mb-3">
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Lazer">Lazer</option>
+                    <option value="Despesa Fixa">Despesa Fixa</option>
+                    <option value="Pessoal">Pessoal</option>
+                    <option value="Assinaturas">Assinaturas</option>
+                    <option value="Casa">Casa</option>
+                    <option value="Educação">Educação</option>
+                    <option value="Saúde">Saúde</option>
+                    <option value="Serviços">Serviços</option>
+                </select>
 
-            <button onclick="adicionarGastoAvista()">Adicionar Gasto</button>
-            <button onclick="esconderFormularios()">Cancelar</button>
-        </div>
-
-        <div id="form-parcelado" class="form-gasto hidden">
-            <h3>Adicionar Gasto Parcelado</h3>
-            <label for="descricao-parcelado">Descrição do Gasto:</label>
-            <input type="text" id="descricao-parcelado" placeholder="Descrição">
-
-            <label for="valor-total">Valor Total:</label>
-            <input type="number" id="valor-total" placeholder="Valor Total">
-
-            <label for="parcelas">Número de Parcelas:</label>
-            <input type="number" id="parcelas" placeholder="Número de Parcelas">
-
-            <label for="data-primeira-parcela">Data da Primeira Parcela:</label>
-            <input type="date" id="data-primeira-parcela">
-
-            <label for="categoria-parcelado">Categoria:</label>
-            <select id="categoria-parcelado">
-                <option value="Alimentação">Alimentação</option>
-                <option value="Lazer">Lazer</option>
-                <option value="Despesa Fixa">Despesa Fixa</option>
-                <option value="Pessoal">Pessoal</option>
-                <option value="Assinaturas">Assinaturas</option>
-                <option value="Casa">Casa</option>
-                <option value="Educação">Educação</option>
-                <option value="Saúde">Saúde</option>
-                <option value="Serviços">Serviços</option>
-            </select>
-
-            <button onclick="adicionarGastoParcelado()">Adicionar Gasto</button>
-            <button onclick="esconderFormularios()">Cancelar</button>
-        </div>
-
-        <div class="extrato-section">
-            <h2>Extrato de Gastos</h2>
-            <table id="extrato">
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Valor</th>
-                        <th>Categoria</th>
-                        <th>Data</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="download-section">
-            <button onclick="exportarParaExcel()">Baixar Relatório em Excel</button>
-        </div>
-    </div>
-
-    <div class="grafico-chat-container">
-        <div class="grafico-section">
-            <canvas id="graficoPizza"></canvas>
-        </div>
-
-        <div class="meta-section">
-            <h3>Metas Financeiras</h3>
-            <div class="meta-inputs">
-                <div>
-                    <label for="valor-meta">Valor da Meta:</label>
-                    <input type="number" id="valor-meta" placeholder="R$">
-                </div>
-                <div>
-                    <label for="prazo-meta">Prazo (meses):</label>
-                    <input type="number" id="prazo-meta" placeholder="Meses">
+                <div class="flex gap-3">
+                    <button onclick="adicionarGastoAvista()" class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto</button>
+                    <button onclick="esconderFormularios()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancelar</button>
                 </div>
             </div>
-            <button onclick="definirMeta()">Definir Meta</button>
 
-            <div class="progresso-container">
-                <div class="progresso-header">
-                    <span>Progresso:</span>
-                    <span id="progresso-valor">0%</span>
+            <!-- Formulário de Gasto Parcelado -->
+            <div id="form-parcelado" class="form-gasto hidden bg-gray-50 p-4 rounded-lg mb-6">
+                <h3 class="text-xl font-bold text-green-600 mb-4">Adicionar Gasto Parcelado</h3>
+                <label for="descricao-parcelado" class="block text-gray-700 mb-2">Descrição do Gasto:</label>
+                <input type="text" id="descricao-parcelado" placeholder="Descrição" class="w-full p-2 border border-gray-300 rounded mb-3">
+
+                <label for="valor-total" class="block text-gray-700 mb-2">Valor Total:</label>
+                <input type="number" id="valor-total" placeholder="Valor Total" class="w-full p-2 border border-gray-300 rounded mb-3">
+
+                <label for="parcelas" class="block text-gray-700 mb-2">Número de Parcelas:</label>
+                <input type="number" id="parcelas" placeholder="Número de Parcelas" class="w-full p-2 border border-gray-300 rounded mb-3">
+
+                <label for="data-primeira-parcela" class="block text-gray-700 mb-2">Data da Primeira Parcela:</label>
+                <input type="date" id="data-primeira-parcela" class="w-full p-2 border border-gray-300 rounded mb-3">
+
+                <label for="categoria-parcelado" class="block text-gray-700 mb-2">Categoria:</label>
+                <select id="categoria-parcelado" class="w-full p-2 border border-gray-300 rounded mb-3">
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Lazer">Lazer</option>
+                    <option value="Despesa Fixa">Despesa Fixa</option>
+                    <option value="Pessoal">Pessoal</option>
+                    <option value="Assinaturas">Assinaturas</option>
+                    <option value="Casa">Casa</option>
+                    <option value="Educação">Educação</option>
+                    <option value="Saúde">Saúde</option>
+                    <option value="Serviços">Serviços</option>
+                </select>
+
+                <div class="flex gap-3">
+                    <button onclick="adicionarGastoParcelado()" class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto</button>
+                    <button onclick="esconderFormularios()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancelar</button>
                 </div>
-                <div class="barra-progresso">
-                    <div id="barra-progresso-interna"></div>
+            </div>
+
+            <!-- Extrato de Gastos -->
+            <div class="extrato-section">
+                <h2 class="text-2xl font-bold text-green-600 mb-4">Extrato de Gastos</h2>
+                <table id="extrato" class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-green-500 text-white">
+                            <th class="p-2">Descrição</th>
+                            <th class="p-2">Valor</th>
+                            <th class="p-2">Categoria</th>
+                            <th class="p-2">Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Linhas do extrato serão adicionadas aqui via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Botão de Download -->
+            <div class="download-section mt-6">
+                <button onclick="exportarParaExcel()" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Baixar Relatório em Excel</button>
+            </div>
+        </div>
+
+        <!-- Seção de Gráfico e Metas -->
+        <div class="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
+            <div class="grafico-section mb-6">
+                <canvas id="graficoPizza"></canvas>
+            </div>
+
+            <div class="meta-section">
+                <h3 class="text-2xl font-bold text-green-600 mb-4">Metas Financeiras</h3>
+                <div class="meta-inputs grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="valor-meta" class="block text-gray-700 mb-2">Valor da Meta:</label>
+                        <input type="number" id="valor-meta" placeholder="R$" class="w-full p-2 border border-gray-300 rounded">
+                    </div>
+                    <div>
+                        <label for="prazo-meta" class="block text-gray-700 mb-2">Prazo (meses):</label>
+                        <input type="number" id="prazo-meta" placeholder="Meses" class="w-full p-2 border border-gray-300 rounded">
+                    </div>
+                </div>
+                <button onclick="definirMeta()" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Definir Meta</button>
+
+                <div class="progresso-container mt-6">
+                    <div class="progresso-header flex justify-between mb-2">
+                        <span class="text-gray-700">Progresso:</span>
+                        <span id="progresso-valor" class="text-gray-700">0%</span>
+                    </div>
+                    <div class="barra-progresso bg-gray-200 rounded h-4">
+                        <div id="barra-progresso-interna" class="bg-green-500 h-4 rounded" style="width: 0%;"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="meta-feedback-overlay" class="overlay hidden">
-        <div id="meta-feedback-window">
-            <span id="meta-feedback-message"></span>
-            <button onclick="fecharJanelaFeedbackMeta()">Fechar</button>
-        </div>
-    </div>
-
-    <div id="confirmation-overlay" class="overlay hidden">
-        <div id="confirmation-window">
-            <span id="confirmation-message"></span>
-            <button onclick="fecharJanelaConfirmacao()">Fechar</button>
-        </div>
-    </div>
-
-    <div id="overlay" class="overlay hidden"></div>
-
-    <div class="footer">
-        <div class="footer-right">
-            <i class="fas fa-paperclip"></i>
-            <i class="fas fa-arrow-up"></i>
+    <!-- Janela de Feedback -->
+    <div id="feedback-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+            <p id="feedback-message" class="text-gray-700 mb-4"></p>
+            <button onclick="fecharFeedback()" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Continuar</button>
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
-
 </html>

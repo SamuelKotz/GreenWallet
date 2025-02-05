@@ -53,6 +53,21 @@ function fecharJanelaConfirmacao() {
     overlay.classList.add('hidden'); // Esconde a janela
 }
 
+// Função para exibir a janela de feedback
+function exibirFeedback(mensagem) {
+    const feedbackOverlay = document.getElementById('feedback-overlay');
+    const feedbackMessage = document.getElementById('feedback-message');
+
+    feedbackMessage.textContent = mensagem; // Define a mensagem
+    feedbackOverlay.classList.remove('hidden'); // Exibe a janela
+}
+
+// Função para fechar a janela de feedback
+function fecharFeedback() {
+    const feedbackOverlay = document.getElementById('feedback-overlay');
+    feedbackOverlay.classList.add('hidden'); // Esconde a janela
+}
+
 // Função para registrar o saldo inicial
 function registrarSaldo() {
     const saldoInput = document.getElementById('saldo');
@@ -61,10 +76,10 @@ function registrarSaldo() {
     if (saldoRegistrado) {
         saldo = saldoRegistrado; // Atualiza o saldo global
         saldoInput.value = ''; // Limpa o campo de entrada
-        exibirJanelaConfirmacao(`Saldo R$ ${saldo.toFixed(2)} registrado com sucesso!`);
+        exibirFeedback(`Saldo R$ ${saldo.toFixed(2)} registrado com sucesso!`);
         atualizarExtrato(); // Atualiza o extrato imediatamente
     } else {
-        alert('Por favor, insira um valor válido para o saldo.');
+        exibirFeedback('Por favor, insira um valor válido para o saldo.');
     }
 }
 
@@ -111,8 +126,10 @@ function adicionarGastoAvista() {
         document.getElementById('descricao-avista').value = '';
         document.getElementById('valor-avista').value = '';
         document.getElementById('data-avista').value = '';
+
+        exibirFeedback('Gasto à vista adicionado com sucesso!');
     } else {
-        alert('Por favor, preencha todos os campos.');
+        exibirFeedback('Por favor, preencha todos os campos.');
     }
 }
 
@@ -158,8 +175,10 @@ function adicionarGastoParcelado() {
         document.getElementById('valor-total').value = '';
         document.getElementById('parcelas').value = '';
         document.getElementById('data-primeira-parcela').value = '';
+
+        exibirFeedback('Gasto parcelado adicionado com sucesso!');
     } else {
-        alert('Por favor, preencha todos os campos.');
+        exibirFeedback('Por favor, preencha todos os campos.');
     }
 }
 
@@ -276,9 +295,9 @@ function definirMeta() {
         meta.dataCriacao = new Date();
         atualizarProgressoMeta();
         salvarDados();
-        alert('Meta definida com sucesso!');
+        exibirFeedback('Meta definida com sucesso!');
     } else {
-        alert('Por favor, insira valores válidos (maiores que zero).');
+        exibirFeedback('Por favor, insira valores válidos (maiores que zero).');
     }
 }
 
