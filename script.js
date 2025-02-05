@@ -17,7 +17,7 @@ let meta = {
     prazo: 0,
     dataCriacao: null
 };
-
+let gastosMetaPessoal = 0; // Variável para armazenar gastos da categoria "Meta Pessoal"
 
 const ctx = document.getElementById('graficoPizza').getContext('2d');
 let graficoPizza;
@@ -107,27 +107,37 @@ function adicionarGastoAvista() {
     const categoria = document.getElementById('categoria-avista').value;
 
     if (descricao && valor && data && categoria) {
+        if (saldo - valor < 0) {
+            exibirFeedback('Saldo insuficiente para realizar este gasto.');
+            return;
+        }
+
         const gasto = {
             descricao: descricao,
             valor: valor,
             categoria: categoria,
-            data: data // Adiciona a data do gasto
+            data: data
         };
 
         gastos.push(gasto);
         categorias[categoria] += valor;
         saldo -= valor;
 
+        // Se o gasto for da categoria "Meta Pessoal", soma ao progresso
+        if (categoria === "Meta Pessoal") {
+            gastosMetaPessoal += valor;
+            atualizarProgressoMeta();
+        }
+
         atualizarExtrato();
         atualizarGrafico();
         esconderFormularios();
+        exibirFeedback(`Gasto de R$ ${valor.toFixed(2)} registrado com sucesso!`);
 
         // Limpa os campos do formulário
         document.getElementById('descricao-avista').value = '';
         document.getElementById('valor-avista').value = '';
         document.getElementById('data-avista').value = '';
-
-        exibirFeedback('Gasto à vista adicionado com sucesso!');
     } else {
         exibirFeedback('Por favor, preencha todos os campos.');
     }
@@ -142,6 +152,11 @@ function adicionarGastoParcelado() {
     const categoria = document.getElementById('categoria-parcelado').value;
 
     if (descricao && valorTotal && parcelas && dataPrimeiraParcela && categoria) {
+        if (saldo - valorTotal < 0) {
+            exibirFeedback('Saldo insuficiente para realizar este gasto.');
+            return;
+        }
+
         const valorParcela = valorTotal / parcelas;
 
         for (let i = 0; i < parcelas; i++) {
@@ -152,16 +167,20 @@ function adicionarGastoParcelado() {
                 descricao: `${descricao} (Parcela ${i + 1}/${parcelas})`,
                 valor: valorParcela,
                 categoria: categoria,
-                data: dataParcela.toISOString().split('T')[0] // Formato YYYY-MM-DD
+                data: dataParcela.toISOString().split('T')[0]
             };
 
             if (dataParcela.getMonth() === new Date().getMonth() && dataParcela.getFullYear() === new Date().getFullYear()) {
-                // Se a parcela for do mês atual, adiciona ao extrato
                 gastos.push(gasto);
                 categorias[categoria] += valorParcela;
                 saldo -= valorParcela;
+
+                // Se o gasto for da categoria "Meta Pessoal", soma ao progresso
+                if (categoria === "Meta Pessoal") {
+                    gastosMetaPessoal += valorParcela;
+                    atualizarProgressoMeta();
+                }
             } else {
-                // Caso contrário, adiciona à lista de parcelas futuras
                 parcelasFuturas.push(gasto);
             }
         }
@@ -169,14 +188,13 @@ function adicionarGastoParcelado() {
         atualizarExtrato();
         atualizarGrafico();
         esconderFormularios();
+        exibirFeedback(`Gasto parcelado de R$ ${valorTotal.toFixed(2)} registrado com sucesso!`);
 
         // Limpa os campos do formulário
         document.getElementById('descricao-parcelado').value = '';
         document.getElementById('valor-total').value = '';
         document.getElementById('parcelas').value = '';
         document.getElementById('data-primeira-parcela').value = '';
-
-        exibirFeedback('Gasto parcelado adicionado com sucesso!');
     } else {
         exibirFeedback('Por favor, preencha todos os campos.');
     }
@@ -304,10 +322,8 @@ function definirMeta() {
 // Adicione esta função para atualizar o progresso
 function atualizarProgressoMeta() {
     if (meta.valor > 0) {
-        const mesesDecorridos = Math.floor((new Date() - meta.dataCriacao) / (1000 * 60 * 60 * 24 * 30));
-        const progressoTemporal = Math.min((mesesDecorridos / meta.prazo) * 100, 100);
-        const progressoFinanceiro = (saldo / meta.valor) * 100;
-        const progressoTotal = Math.min(progressoTemporal, progressoFinanceiro);
+        const progressoFinanceiro = (gastosMetaPessoal / meta.valor) * 100; // Calcula o progresso com base nos gastos da meta
+        const progressoTotal = Math.min(progressoFinanceiro, 100); // Limita o progresso a 100%
 
         document.getElementById('progresso-valor').textContent = `${progressoTotal.toFixed(1)}%`;
         document.getElementById('barra-progresso-interna').style.width = `${progressoTotal}%`;
