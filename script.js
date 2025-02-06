@@ -18,6 +18,7 @@ let meta = {
     dataCriacao: null
 };
 let gastosMetaPessoal = 0; // Variável para armazenar gastos da categoria "Meta Pessoal"
+let planejamentos = []; // Array para armazenar os planejamentos
 
 const ctx = document.getElementById('graficoPizza').getContext('2d');
 let graficoPizza;
@@ -55,11 +56,12 @@ function fecharJanelaConfirmacao() {
 
 // Função para exibir a janela de feedback
 function exibirFeedback(mensagem) {
-    const feedbackOverlay = document.getElementById('feedback-overlay');
-    const feedbackMessage = document.getElementById('feedback-message');
-
-    feedbackMessage.textContent = mensagem; // Define a mensagem
-    feedbackOverlay.classList.remove('hidden'); // Exibe a janela
+    const feedbackElement = document.getElementById('feedback'); // Certifique-se de que o ID está correto
+    feedbackElement.textContent = mensagem;
+    feedbackElement.classList.remove('hidden'); // Mostra o feedback
+    setTimeout(() => {
+        feedbackElement.classList.add('hidden'); // Esconde após 3 segundos
+    }, 3000);
 }
 
 // Função para fechar a janela de feedback
@@ -134,6 +136,9 @@ function adicionarGastoAvista() {
         esconderFormularios();
         exibirFeedback(`Gasto de R$ ${valor.toFixed(2)} registrado com sucesso!`);
 
+        // Atualiza o histórico após adicionar o gasto
+        atualizarHistorico();
+
         // Limpa os campos do formulário
         document.getElementById('descricao-avista').value = '';
         document.getElementById('valor-avista').value = '';
@@ -189,6 +194,9 @@ function adicionarGastoParcelado() {
         atualizarGrafico();
         esconderFormularios();
         exibirFeedback(`Gasto parcelado de R$ ${valorTotal.toFixed(2)} registrado com sucesso!`);
+
+        // Atualiza o histórico após adicionar o gasto
+        atualizarHistorico();
 
         // Limpa os campos do formulário
         document.getElementById('descricao-parcelado').value = '';
@@ -336,7 +344,8 @@ function salvarDados() {
         gastos,
         parcelasFuturas,
         categorias,
-        meta
+        meta,
+        planejamentos // Adiciona planejamentos ao armazenamento
     };
     localStorage.setItem('greenWalletData', JSON.stringify(dados));
 }
@@ -359,10 +368,12 @@ function carregarDados() {
             "Serviços": 0
         };
         meta = dados.meta || { valor: 0, prazo: 0, dataCriacao: null };
+        planejamentos = dados.planejamentos || []; // Carrega planejamentos
         if (meta.dataCriacao) meta.dataCriacao = new Date(meta.dataCriacao);
         atualizarExtrato();
         atualizarGrafico();
         atualizarProgressoMeta();
+        atualizarHistoricoPlanejamentos(); // Atualiza o histórico de planejamentos
     }
 }
 
@@ -373,4 +384,65 @@ function exibirJanelaFeedbackMeta(mensagem) {
 
 function fecharJanelaFeedbackMeta() {
     document.getElementById('meta-feedback-overlay').classList.add('hidden');
+}
+
+// Função para abrir o menu lateral
+document.getElementById('menu-button').addEventListener('click', () => {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('-translate-x-full'); // Alterna a classe para mostrar/ocultar
+});
+
+// Função para fechar o menu lateral
+function fecharMenu() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.add('-translate-x-full'); // Esconde o menu
+}
+
+// Função para atualizar o histórico de gastos no menu
+function atualizarHistorico() {
+    const historicoGastos = document.getElementById('historico-gastos');
+    historicoGastos.innerHTML = ''; // Limpa o histórico atual
+
+    gastos.forEach(gasto => {
+        const li = document.createElement('li');
+        li.textContent = `${gasto.descricao} - R$ ${gasto.valor.toFixed(2)} - ${gasto.data}`;
+        historicoGastos.appendChild(li);
+    });
+}
+
+function salvarPlanejamento() {
+    const nomePlanejamento = document.getElementById('nome-planejamento').value;
+
+    if (nomePlanejamento) {
+        const planejamento = {
+            nome: nomePlanejamento,
+            saldo: saldo,
+            gastos: [...gastos], // Copia os gastos atuais
+            categorias: { ...categorias }, // Copia as categorias atuais
+            meta: { ...meta } // Copia a meta atual
+        };
+
+        planejamentos.push(planejamento); // Adiciona o planejamento ao array
+        atualizarHistoricoPlanejamentos(); // Atualiza o histórico no menu lateral
+        fecharJanelaPlanejamento(); // Fecha a janela
+        document.getElementById('nome-planejamento').value = ''; // Limpa o campo de entrada
+        exibirFeedback('Planejamento salvo com sucesso!'); // Feedback ao usuário
+    } else {
+        exibirFeedback('Por favor, insira um nome válido para o planejamento.');
+    }
+}
+
+function atualizarHistoricoPlanejamentos() {
+    const historicoPlanejamentos = document.getElementById('historico-planejamentos'); // Certifique-se de que o ID está correto
+    historicoPlanejamentos.innerHTML = ''; // Limpa o histórico atual
+
+    planejamentos.forEach(planejamento => {
+        const li = document.createElement('li');
+        li.textContent = `${planejamento.nome} - Saldo: R$ ${planejamento.saldo.toFixed(2)}`;
+        historicoPlanejamentos.appendChild(li);
+    });
+}
+
+function abrirJanelaPlanejamento() {
+    document.getElementById('planejamento-overlay').classList.remove('hidden');
 }
