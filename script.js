@@ -427,9 +427,29 @@ function salvarPlanejamento() {
         fecharJanelaPlanejamento(); // Fecha a janela
         document.getElementById('nome-planejamento').value = ''; // Limpa o campo de entrada
         exibirFeedback('Planejamento salvo com sucesso!'); // Feedback ao usuário
+
+        // Chama a função para exportar o planejamento para Excel
+        exportarPlanejamentoParaExcel(planejamento);
     } else {
         exibirFeedback('Por favor, insira um nome válido para o planejamento.');
     }
+}
+
+function exportarPlanejamentoParaExcel(planejamento) {
+    const dados = [{
+        Nome: planejamento.nome,
+        Saldo: planejamento.saldo,
+        Gastos: JSON.stringify(planejamento.gastos), // Converte gastos para string
+        Categorias: JSON.stringify(planejamento.categorias), // Converte categorias para string
+        Meta: JSON.stringify(planejamento.meta) // Converte meta para string
+    }];
+
+    const worksheet = XLSX.utils.json_to_sheet(dados);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Planejamento");
+
+    // Gera o arquivo Excel
+    XLSX.writeFile(workbook, `${planejamento.nome}.xlsx`);
 }
 
 function atualizarHistoricoPlanejamentos() {
@@ -438,11 +458,23 @@ function atualizarHistoricoPlanejamentos() {
 
     planejamentos.forEach(planejamento => {
         const li = document.createElement('li');
-        li.textContent = `${planejamento.nome} - Saldo: R$ ${planejamento.saldo.toFixed(2)}`;
+        li.textContent = planejamento.nome;
+
+        // Cria um botão para download
+        const downloadButton = document.createElement('button');
+        downloadButton.textContent = 'Baixar Excel';
+        downloadButton.className = 'ml-2 bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600';
+        downloadButton.onclick = () => exportarPlanejamentoParaExcel(planejamento); // Chama a função de exportação
+
+        li.appendChild(downloadButton);
         historicoPlanejamentos.appendChild(li);
     });
 }
 
 function abrirJanelaPlanejamento() {
     document.getElementById('planejamento-overlay').classList.remove('hidden');
+}
+
+function fecharJanelaPlanejamento() {
+    document.getElementById('planejamento-overlay').classList.add('hidden'); // Esconde a janela
 }
