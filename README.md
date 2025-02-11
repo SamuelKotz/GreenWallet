@@ -101,7 +101,7 @@ git clone https://github.com/SamuelKotz/GreenWallet.git
 ```
 2. Abra o arquivo index.html no seu navegador (pode utilizar a extensão Live Server para VSCode)
 
-## Atualizações recentes
+## Atualizações recentes (nesta branch)
 
 - Gastos Parcelados:
   Agora, apenas a parcela do mês atual é exibida no extrato.
@@ -109,4 +109,13 @@ git clone https://github.com/SamuelKotz/GreenWallet.git
 
 - Foco no Controle Mensal:
   O aplicativo foi ajustado para ser um controle de gastos mensal, exibindo apenas os gastos do mês atual.
+
+- Migração para Tailwind:
+  O site agora usa o framework Tailwind CSS para design
+
+- Menu Lateral:
+  Agora há um botão que abre um menu lateral que salva o histórico de planejamentos salvos (com botão para download de um arquivo excel do mesmo)
+
+- Metas Pessoais:
+  O site permite o usuário definir uma meta pessoal e ver o seu progresso 
 
