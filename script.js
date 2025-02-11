@@ -478,3 +478,30 @@ function abrirJanelaPlanejamento() {
 function fecharJanelaPlanejamento() {
     document.getElementById('planejamento-overlay').classList.add('hidden'); // Esconde a janela
 }
+
+// Função para reiniciar o planejamento
+function reiniciarPlanejamento() {
+    const confirmar = confirm("Você tem certeza que deseja reiniciar seu planejamento? Todos os dados serão perdidos.");
+    if (confirmar) {
+        // Limpa os dados
+        saldo = 0;
+        gastos = [];
+        parcelasFuturas = [];
+        categorias = {
+            "Alimentação": 0,
+            "Lazer": 0,
+            "Despesa Fixa": 0,
+            "Pessoal": 0,
+            "Assinaturas": 0,
+            "Casa": 0,
+            "Educação": 0,
+            "Saúde": 0,
+            "Serviços": 0
+        };
+
+        // Atualiza a interface
+        atualizarExtrato();
+        atualizarGrafico();
+        alert("Seu planejamento foi reiniciado com sucesso!");
+    }
+}
