@@ -12,12 +12,6 @@ let categorias = {
     "Saúde": 0,
     "Serviços": 0
 };
-let meta = {
-    valor: 0,
-    prazo: 0,
-    dataCriacao: null
-};
-let gastosMetaPessoal = 0; // Variável para armazenar gastos da categoria "Meta Pessoal"
 let planejamentos = []; // Array para armazenar os planejamentos
 
 const ctx = document.getElementById('graficoPizza').getContext('2d');
@@ -56,11 +50,14 @@ function fecharJanelaConfirmacao() {
 
 // Função para exibir a janela de feedback
 function exibirFeedback(mensagem) {
-    const feedbackElement = document.getElementById('feedback'); // Certifique-se de que o ID está correto
-    feedbackElement.textContent = mensagem;
-    feedbackElement.classList.remove('hidden'); // Mostra o feedback
+    const feedbackMessage = document.getElementById('feedback-message');
+    feedbackMessage.textContent = mensagem; // Define a mensagem
+    const feedbackOverlay = document.getElementById('feedback-overlay');
+    feedbackOverlay.classList.remove('hidden'); // Mostra a janela de feedback
+
+    // Fecha a janela automaticamente após 3 segundos
     setTimeout(() => {
-        feedbackElement.classList.add('hidden'); // Esconde após 3 segundos
+        fecharFeedback();
     }, 3000);
 }
 
@@ -125,12 +122,6 @@ function adicionarGastoAvista() {
         categorias[categoria] += valor;
         saldo -= valor;
 
-        // Se o gasto for da categoria "Meta Pessoal", soma ao progresso
-        if (categoria === "Meta Pessoal") {
-            gastosMetaPessoal += valor;
-            atualizarProgressoMeta();
-        }
-
         atualizarExtrato();
         atualizarGrafico();
         esconderFormularios();
@@ -179,12 +170,6 @@ function adicionarGastoParcelado() {
                 gastos.push(gasto);
                 categorias[categoria] += valorParcela;
                 saldo -= valorParcela;
-
-                // Se o gasto for da categoria "Meta Pessoal", soma ao progresso
-                if (categoria === "Meta Pessoal") {
-                    gastosMetaPessoal += valorParcela;
-                    atualizarProgressoMeta();
-                }
             } else {
                 parcelasFuturas.push(gasto);
             }
@@ -311,40 +296,12 @@ function exportarParaExcel() {
     XLSX.writeFile(workbook, "gastos.xlsx");
 }
 
-function definirMeta() {
-    const valorMeta = parseFloat(document.getElementById('valor-meta').value);
-    const prazoMeta = parseInt(document.getElementById('prazo-meta').value);
-
-    if (valorMeta > 0 && prazoMeta > 0) {
-        meta.valor = valorMeta;
-        meta.prazo = prazoMeta;
-        meta.dataCriacao = new Date();
-        atualizarProgressoMeta();
-        salvarDados();
-        exibirFeedback('Meta definida com sucesso!');
-    } else {
-        exibirFeedback('Por favor, insira valores válidos (maiores que zero).');
-    }
-}
-
-// Adicione esta função para atualizar o progresso
-function atualizarProgressoMeta() {
-    if (meta.valor > 0) {
-        const progressoFinanceiro = (gastosMetaPessoal / meta.valor) * 100; // Calcula o progresso com base nos gastos da meta
-        const progressoTotal = Math.min(progressoFinanceiro, 100); // Limita o progresso a 100%
-
-        document.getElementById('progresso-valor').textContent = `${progressoTotal.toFixed(1)}%`;
-        document.getElementById('barra-progresso-interna').style.width = `${progressoTotal}%`;
-    }
-}
-
 function salvarDados() {
     const dados = {
         saldo,
         gastos,
         parcelasFuturas,
         categorias,
-        meta,
         planejamentos // Adiciona planejamentos ao armazenamento
     };
     localStorage.setItem('greenWalletData', JSON.stringify(dados));
@@ -367,12 +324,9 @@ function carregarDados() {
             "Saúde": 0,
             "Serviços": 0
         };
-        meta = dados.meta || { valor: 0, prazo: 0, dataCriacao: null };
         planejamentos = dados.planejamentos || []; // Carrega planejamentos
-        if (meta.dataCriacao) meta.dataCriacao = new Date(meta.dataCriacao);
         atualizarExtrato();
         atualizarGrafico();
-        atualizarProgressoMeta();
         atualizarHistoricoPlanejamentos(); // Atualiza o histórico de planejamentos
     }
 }
@@ -419,7 +373,6 @@ function salvarPlanejamento() {
             saldo: saldo,
             gastos: [...gastos], // Copia os gastos atuais
             categorias: { ...categorias }, // Copia as categorias atuais
-            meta: { ...meta } // Copia a meta atual
         };
 
         planejamentos.push(planejamento); // Adiciona o planejamento ao array
@@ -441,7 +394,6 @@ function exportarPlanejamentoParaExcel(planejamento) {
         Saldo: planejamento.saldo,
         Gastos: JSON.stringify(planejamento.gastos), // Converte gastos para string
         Categorias: JSON.stringify(planejamento.categorias), // Converte categorias para string
-        Meta: JSON.stringify(planejamento.meta) // Converte meta para string
     }];
 
     const worksheet = XLSX.utils.json_to_sheet(dados);
@@ -479,29 +431,79 @@ function fecharJanelaPlanejamento() {
     document.getElementById('planejamento-overlay').classList.add('hidden'); // Esconde a janela
 }
 
-// Função para reiniciar o planejamento
-function reiniciarPlanejamento() {
-    const confirmar = confirm("Você tem certeza que deseja reiniciar seu planejamento? Todos os dados serão perdidos.");
-    if (confirmar) {
-        // Limpa os dados
-        saldo = 0;
-        gastos = [];
-        parcelasFuturas = [];
-        categorias = {
-            "Alimentação": 0,
-            "Lazer": 0,
-            "Despesa Fixa": 0,
-            "Pessoal": 0,
-            "Assinaturas": 0,
-            "Casa": 0,
-            "Educação": 0,
-            "Saúde": 0,
-            "Serviços": 0
-        };
+function importarPlanejamento(event) {
+    const file = event.target.files[0]; // Obtém o arquivo selecionado
+    const reader = new FileReader();
 
-        // Atualiza a interface
-        atualizarExtrato();
-        atualizarGrafico();
-        alert("Seu planejamento foi reiniciado com sucesso!");
+    reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+
+        // Supondo que o planejamento está na primeira aba
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(worksheet);
+
+        if (json.length > 0) {
+            const planejamento = json[0]; // Pega o primeiro objeto do JSON
+
+            // Atualiza os dados do planejamento
+            saldo = planejamento.Saldo || 0;
+            gastos = JSON.parse(planejamento.Gastos) || [];
+            categorias = JSON.parse(planejamento.Categorias) || {
+                "Alimentação": 0,
+                "Lazer": 0,
+                "Despesa Fixa": 0,
+                "Pessoal": 0,
+                "Assinaturas": 0,
+                "Casa": 0,
+                "Educação": 0,
+                "Saúde": 0,
+                "Serviços": 0
+            };
+
+            // Atualiza o extrato e o gráfico
+            atualizarExtrato();
+            atualizarGrafico();
+            exibirFeedback('Planejamento importado com sucesso!');
+        } else {
+            exibirFeedback('O arquivo não contém dados válidos.');
+        }
+    };
+
+    reader.onerror = function() {
+        exibirFeedback('Erro ao ler o arquivo. Por favor, tente novamente.');
+    };
+
+    if (file) {
+        reader.readAsArrayBuffer(file); // Lê o arquivo como um ArrayBuffer
     }
+}
+
+function reiniciarPlanejamento() {
+    // Redefine o saldo e os gastos
+    saldo = 0;
+    gastos = [];
+    parcelasFuturas = [];
+    categorias = {
+        "Alimentação": 0,
+        "Lazer": 0,
+        "Despesa Fixa": 0,
+        "Pessoal": 0,
+        "Assinaturas": 0,
+        "Casa": 0,
+        "Educação": 0,
+        "Saúde": 0,
+        "Serviços": 0
+    };
+    
+    // Limpa o histórico de planejamentos
+    planejamentos = [];
+    
+    // Atualiza o extrato e o gráfico
+    atualizarExtrato();
+    atualizarGrafico();
+    atualizarHistoricoPlanejamentos(); // Atualiza o histórico de planejamentos no menu lateral
+
+    // Exibe uma mensagem de feedback ao usuário
+    exibirFeedback('Planejamento reiniciado com sucesso!');
 }

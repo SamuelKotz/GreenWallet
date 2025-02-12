@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 </head>
+
 <body class="bg-gray-100 p-5">
     <!-- Menu Lateral -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50">
+    <div id="sidebar"
+        class="fixed inset-y-0 left-0 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50">
         <div class="p-4">
             <h2 class="text-xl font-bold text-green-600">Histórico de Gastos</h2>
             <ul id="historico-gastos" class="mt-4">
@@ -20,12 +23,14 @@
             <ul id="historico-planejamentos" class="mt-4">
                 <!-- Os planejamentos serão adicionados aqui -->
             </ul>
-            <button onclick="fecharMenu()" class="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-red-600">Fechar</button>
+            <button onclick="fecharMenu()"
+                class="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-red-600">Fechar</button>
         </div>
     </div>
 
     <!-- Botão para abrir o menu -->
-    <button id="menu-button" class="fixed top-5 left-5 z-50 bg-green-500 text-white p-2 rounded-full hover:bg-green-600">
+    <button id="menu-button"
+        class="fixed top-5 left-5 z-50 bg-green-500 text-white p-2 rounded-full hover:bg-green-600">
         <img src="logo.svg" alt="Logo" class="w-8 h-8">
     </button>
 
@@ -40,23 +45,31 @@
         <div class="bg-white p-6 rounded-lg shadow-md w-full lg:w-1/2">
             <div class="saldo-section mb-6">
                 <label for="saldo" class="block text-gray-700 font-bold mb-2">Saldo Inicial:</label>
-                <input type="number" id="saldo" placeholder="Digite seu saldo" class="w-full p-2 border border-gray-300 rounded mb-3">
-                <button onclick="registrarSaldo()" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Registrar Saldo</button>
+                <input type="number" id="saldo" placeholder="Digite seu saldo"
+                    class="w-full p-2 border border-gray-300 rounded mb-3">
+                <button onclick="registrarSaldo()"
+                    class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Registrar Saldo</button>
             </div>
 
             <div class="botoes-gastos flex gap-3 mb-6">
-                <button onclick="mostrarFormulario('avista')" class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto à Vista</button>
-                <button onclick="mostrarFormulario('parcelado')" class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto Parcelado</button>
+                <button onclick="mostrarFormulario('avista')"
+                    class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto à
+                    Vista</button>
+                <button onclick="mostrarFormulario('parcelado')"
+                    class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto
+                    Parcelado</button>
             </div>
 
             <!-- Formulário de Gasto à Vista -->
             <div id="form-avista" class="form-gasto hidden bg-gray-50 p-4 rounded-lg mb-6">
                 <h3 class="text-xl font-bold text-green-600 mb-4">Adicionar Gasto à Vista</h3>
                 <label for="descricao-avista" class="block text-gray-700 mb-2">Descrição do Gasto:</label>
-                <input type="text" id="descricao-avista" placeholder="Descrição" class="w-full p-2 border border-gray-300 rounded mb-3">
+                <input type="text" id="descricao-avista" placeholder="Descrição"
+                    class="w-full p-2 border border-gray-300 rounded mb-3">
 
                 <label for="valor-avista" class="block text-gray-700 mb-2">Valor do Gasto:</label>
-                <input type="number" id="valor-avista" placeholder="Valor" class="w-full p-2 border border-gray-300 rounded mb-3">
+                <input type="number" id="valor-avista" placeholder="Valor"
+                    class="w-full p-2 border border-gray-300 rounded mb-3">
 
                 <label for="data-avista" class="block text-gray-700 mb-2">Data do Gasto:</label>
                 <input type="date" id="data-avista" class="w-full p-2 border border-gray-300 rounded mb-3">
@@ -72,12 +85,15 @@
                     <option value="Educação">Educação</option>
                     <option value="Saúde">Saúde</option>
                     <option value="Serviços">Serviços</option>
-                    <option value="Meta Pessoal">Meta Pessoal</option> 
+                    <option value="Meta Pessoal">Meta Pessoal</option>
                 </select>
 
                 <div class="flex gap-3">
-                    <button onclick="adicionarGastoAvista()" class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto</button>
-                    <button onclick="esconderFormularios()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancelar</button>
+                    <button onclick="adicionarGastoAvista()"
+                        class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar
+                        Gasto</button>
+                    <button onclick="esconderFormularios()"
+                        class="flex-1 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancelar</button>
                 </div>
             </div>
 
@@ -85,13 +101,16 @@
             <div id="form-parcelado" class="form-gasto hidden bg-gray-50 p-4 rounded-lg mb-6">
                 <h3 class="text-xl font-bold text-green-600 mb-4">Adicionar Gasto Parcelado</h3>
                 <label for="descricao-parcelado" class="block text-gray-700 mb-2">Descrição do Gasto:</label>
-                <input type="text" id="descricao-parcelado" placeholder="Descrição" class="w-full p-2 border border-gray-300 rounded mb-3">
+                <input type="text" id="descricao-parcelado" placeholder="Descrição"
+                    class="w-full p-2 border border-gray-300 rounded mb-3">
 
                 <label for="valor-total" class="block text-gray-700 mb-2">Valor Total:</label>
-                <input type="number" id="valor-total" placeholder="Valor Total" class="w-full p-2 border border-gray-300 rounded mb-3">
+                <input type="number" id="valor-total" placeholder="Valor Total"
+                    class="w-full p-2 border border-gray-300 rounded mb-3">
 
                 <label for="parcelas" class="block text-gray-700 mb-2">Número de Parcelas:</label>
-                <input type="number" id="parcelas" placeholder="Número de Parcelas" class="w-full p-2 border border-gray-300 rounded mb-3">
+                <input type="number" id="parcelas" placeholder="Número de Parcelas"
+                    class="w-full p-2 border border-gray-300 rounded mb-3">
 
                 <label for="data-primeira-parcela" class="block text-gray-700 mb-2">Data da Primeira Parcela:</label>
                 <input type="date" id="data-primeira-parcela" class="w-full p-2 border border-gray-300 rounded mb-3">
@@ -107,12 +126,15 @@
                     <option value="Educação">Educação</option>
                     <option value="Saúde">Saúde</option>
                     <option value="Serviços">Serviços</option>
-                    <option value="Meta Pessoal">Meta Pessoal</option> 
+                    <option value="Meta Pessoal">Meta Pessoal</option>
                 </select>
 
                 <div class="flex gap-3">
-                    <button onclick="adicionarGastoParcelado()" class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar Gasto</button>
-                    <button onclick="esconderFormularios()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancelar</button>
+                    <button onclick="adicionarGastoParcelado()"
+                        class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Adicionar
+                        Gasto</button>
+                    <button onclick="esconderFormularios()"
+                        class="flex-1 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancelar</button>
                 </div>
             </div>
 
@@ -135,16 +157,31 @@
 
             <!-- Botão de Download -->
             <div class="download-section mt-6">
-                <button onclick="exportarParaExcel()" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Baixar Relatório em Excel</button>
+                <button onclick="exportarParaExcel()"
+                    class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Baixar Relatório em
+                    Excel</button>
             </div>
 
             <div class="reiniciar-planejamento mt-6">
-                <button onclick="reiniciarPlanejamento()"class="w-full bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Reiniciar Planejamento</button>
+                <button onclick="reiniciarPlanejamento()"
+                    class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Reiniciar
+                    Planejamento</button>
             </div>
 
             <!-- Botão de Salvar Planejamento -->
             <div class="salvar-planejamento-section mt-6">
-                <button onclick="abrirJanelaPlanejamento()" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Salvar Planejamento</button>
+                <button onclick="abrirJanelaPlanejamento()"
+                    class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Salvar
+                    Planejamento</button>
+            </div>
+
+            <!-- Botão de Importação -->
+            <div class="importar-planejamento-section mt-6">
+                <input type="file" id="importar-planejamento" accept=".xlsx" class="hidden"
+                    onchange="importarPlanejamento(event)">
+                <label for="importar-planejamento"
+                    class="w-full bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 text-center cursor-pointer">Importar
+                    Planejamento</label>
             </div>
         </div>
 
@@ -153,31 +190,6 @@
             <div class="grafico-section mb-6">
                 <canvas id="graficoPizza"></canvas>
             </div>
-
-            <div class="meta-section">
-                <h3 class="text-2xl font-bold text-green-600 mb-4">Metas Financeiras</h3>
-                <div class="meta-inputs grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label for="valor-meta" class="block text-gray-700 mb-2">Valor da Meta:</label>
-                        <input type="number" id="valor-meta" placeholder="R$" class="w-full p-2 border border-gray-300 rounded">
-                    </div>
-                    <div>
-                        <label for="prazo-meta" class="block text-gray-700 mb-2">Prazo (meses):</label>
-                        <input type="number" id="prazo-meta" placeholder="Meses" class="w-full p-2 border border-gray-300 rounded">
-                    </div>
-                </div>
-                <button onclick="definirMeta()" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Definir Meta</button>
-
-                <div class="progresso-container mt-6">
-                    <div class="progresso-header flex justify-between mb-2">
-                        <span class="text-gray-700">Progresso:</span>
-                        <span id="progresso-valor" class="text-gray-700">0%</span>
-                    </div>
-                    <div class="barra-progresso bg-gray-200 rounded h-4">
-                        <div id="barra-progresso-interna" class="bg-green-500 h-4 rounded" style="width: 0%;"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -185,7 +197,8 @@
     <div id="feedback-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center">
             <p id="feedback-message" class="text-gray-700 mb-4"></p>
-            <button onclick="fecharFeedback()" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Continuar</button>
+            <button onclick="fecharFeedback()"
+                class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Continuar</button>
         </div>
     </div>
 
@@ -193,14 +206,18 @@
     <div id="planejamento-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
         <div class="bg-white p-6 rounded-lg shadow-lg text-center">
             <h3 class="text-xl font-bold mb-4">Salvar Planejamento</h3>
-            <input type="text" id="nome-planejamento" placeholder="Nome do Planejamento" class="w-full p-2 border border-gray-300 rounded mb-4">
+            <input type="text" id="nome-planejamento" placeholder="Nome do Planejamento"
+                class="w-full p-2 border border-gray-300 rounded mb-4">
             <div class="flex gap-3">
-                <button onclick="salvarPlanejamento()" class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Salvar</button>
-                <button onclick="fecharJanelaPlanejamento()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancelar</button>
+                <button onclick="salvarPlanejamento()"
+                    class="flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Salvar</button>
+                <button onclick="fecharJanelaPlanejamento()"
+                    class="flex-1 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancelar</button>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>
